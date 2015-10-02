@@ -1,3 +1,4 @@
+#apache服务器 静态化路径设置
 RewriteEngine on
 RewriteCond $1 !^(index\.php|robots\.txt|theme|uploads|favicon\.ico)
 RewriteRule ^(.*)$ /index.php?/$1 [L]
