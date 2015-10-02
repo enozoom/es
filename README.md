@@ -1,6 +1,7 @@
 ES框架  
 @author Joe  
-≽ PHP5.5
+≽ PHP5.5  
+如果不会用到事务，则PHP5以上的环境即可运行
 
 -system 框架文件  
 --core 核心文件  
