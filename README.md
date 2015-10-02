@@ -1,6 +1,7 @@
 ES框架  
 @author Joe  
-  
+>= PHP5.5
+
 -system 框架文件  
 --core 核心文件  
 --libraries 核心类库  
@@ -49,3 +50,4 @@ ES框架
 --2015 按年份规整文件夹  
 ----10 按月份规整  
 ------5ef748a5195b12bf711d1ffded46e2e3.jpg
+
