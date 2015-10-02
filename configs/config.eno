@@ -1,0 +1,23 @@
+{
+#---------
+# 基本设置
+#---------
+
+# 开启调试
+"debug":"1",
+
+# 开启页面运行计时器
+"timer":"0",
+
+# 页面默认后缀
+"suffix":"enozoomstudio",
+
+# 默认css,js,less的存放文件路径，不含./theme
+"theme_path":"public/2015",
+
+# 默认的当前url，如http://www.enozoom.com/
+"base_url":"",
+
+# 是否开启压缩
+"compress_outpage":"0",
+}

@@ -1,0 +1,12 @@
+[
+#---------
+# 路由器
+#---------
+
+# 默认路由
+{"pattern":"default","cmdq":"d=public&c=home"},
+
+# 合并css,js
+{"pattern":"min\/(.+\\.(?:cs|j|les)s)","cmdq":"d=common&c=min&m=index&q=$1"},
+
+]
