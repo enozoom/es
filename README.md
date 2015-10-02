@@ -1,6 +1,6 @@
 ES框架  
 @author Joe  
->= PHP5.5
+≽ PHP5.5
 
 -system 框架文件  
 --core 核心文件  
