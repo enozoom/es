@@ -14,41 +14,41 @@
 
 
 ### 第二步、访问demo示例
-  默认首页示例 http://Yourhost
+  默认首页示例 http://Yourhost  
   默认model操作示例 http://Yourhost/public/home/demo
 
 ### 第三步、查看控制器和视图
-  示例控制器的位置：`./application/controllers/public/home.php`
+  示例控制器的位置：`./application/controllers/public/home.php`  
   示例视图的位置：`./application/views/public/home/index.php`
 
 ## 文件结构
 ### system *框架文件*
 >core *核心文件* 
-  libraries *核心类库*
-  helpers *核心辅助函数*
+  libraries *核心类库*  
+  helpers *核心辅助函数*  
   database *数据库*
 
 
 ###application *开发文件*
 
->cache *缓存文件,需要具有读写的权限*
->controllers *控制器*
-	>>public *前端控制器*
-	>>>home *默认前端控制*
+>cache *缓存文件,需要具有读写的权限*  
+>controllers *控制器*  
+>>public *前端控制器*  
+>>>home *默认前端控制*  
 	
->core *核心基类*
+>core *核心基类*  
 >errors *异常页面*  
-    >>404.php  
-    500.php
+>>404.php  
+500.php
 
->helpers *辅助函数库*
-  libraries *类库*
-  models *数据模型*
-  views *视图文件*
+>helpers *辅助函数库*  
+  libraries *类库*  
+  models *数据模型*  
+  views *视图文件*  
 >>html   
 >>>layout *公共头尾文件夹*  
 >>>>header.php *公共头部*  
-        footer.php *公共尾部*
+  footer.php *公共尾部*
 
 >>>home *与控制器名一致的视图文件夹* 
 >>>> index.php *与控制器方法名一致的文件*
@@ -62,8 +62,8 @@
 >>>>2015-10-02.log
 
 ### theme *css,javascript文件*
->awesome
->public *前端*
+>awesome  
+>public *前端*  
 >>css 
 >>>home.index.css *控制器名.控制器方法名.css*
 
