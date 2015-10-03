@@ -1,4 +1,4 @@
-<h1>ES<sup><small>EnozoomStudio</small></sup>框架</h1> 
+<h1>ES框架</h1> 
 <p>@author Joe</p>
 <h2>前提</h2>
 <ol>
