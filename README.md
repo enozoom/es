@@ -103,7 +103,8 @@
 ## 关于图片的引用
   使用相对路径进行引用，如`./uploads/build/whoami.png`,如果引用则`<img src="/uploads/build/whoami.png" alt="" />`
 
-## 自动生成ES_model
+## 自动生成ES_model子类
   系统会自动生成基本的ES_model子类，操作也非常简单  
-  1. 访问`http://Yourhost/common/model_install`，生成变开始了
+  1. 访问`http://Yourhost/common/model_install`，系统会自动在`./application/models/`下生成ES_model的子类。
   2. 生成结束后，请删除`./application/controllers/common/model_install.php`文件。
+    虽然能够生成基本的ES_model，但更多的数据库交互，仍需要手动进行完善，未避免完善后的model不被覆盖，请一定进行第2条操作。
