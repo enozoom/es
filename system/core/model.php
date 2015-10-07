@@ -28,7 +28,7 @@ class ES_model{
 * @return array/string 
 */
   public function _attributes($attr=''){
-/**
+/*
     $atts = array('gift_id'=>'ID',
                   'estate_id'=>'楼盘',
                   'gift_category_id'=>'分类',
@@ -50,7 +50,7 @@ class ES_model{
 * @return
 */  
   public function _relation(){
-/**
+/*
     return array(
       'one2one'=>array('gc_id'=>array('table'=>'gift_condition','fkfield'=>'gc_id')),
       'one2more'=>array(),
