@@ -78,15 +78,27 @@
 >>>10 *按月份规整*
 >>>>whoami.png
 
-##关于路由配置
+## 关于路由配置  
   路由通过./configs/routes.eno,以正则表达式的方式进行设置，需要注意"\"需要转义，如匹配数字"\d"，需要写成"\\d"。
 
   路由使用的前提是服务器支持rewrite功能，.htaccess对应Apache，web.config对应IIS，config.yaml对应SAE。
 
-##关于一个页面执行流程
+## 关于一个页面执行流程  
     ./index.php 
     → ./system/core/enozoomstudio.php 
     → ./system/core/route.php 
     → ./system/core/controller.php 
     → ./application/controllers/your_controller_class.php 
     → ./application/views/your_view_file.php
+## 关于css,js的命名及引用
+  css,js的默认存放文件夹为`./configs/config.eno`中规定的`theme_path`  
+  css,js的命名规则为控制器名.控制器方法名.css|js,如，当前控制器名为home和当前控制器方法名为index,则css|js的命名为home.index.css|js    
+
+  css,js的引用有两种方式，均在控制器内设置  
+  1. 控制器类属性`public $css = 'base,dom';`或者`public $js = 'base.jquery.min';`
+  2. 控制器在调用`protected function view($data=array(),...){}`中传入的`$data`中设置`$data['css']`
+  css,js默认通过控制器`min`(`./application/controllers/common/min.php`)调用。  
+  3. 设置时，只需要填入css|js的在默认存放文件夹中的名字，如`./theme/default_theme_path/home.index.css`,只需要填入`public $css = 'home.index';`或者`$data['css'] = 'home.index'`,多个引用，用半角逗号隔开，如`public $css = 'base,home.index'`，当然默认控制器的`view()`方法能够自动引用与控制器名和控制器方法名相同的css|js  
+
+## 关于图片的引用
+  使用相对路径进行引用，如`./uploads/build/whoami.png`,如果引用则`<img src="/uploads/build/whoami.png" alt="" />`
