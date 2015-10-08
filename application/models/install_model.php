@@ -3,6 +3,9 @@
 * 生成ES_model的实现类
 * @author Joe e@enozoom.com
 * 2015年10月7日 下午3:36:02
+* -------------------------
+* 2015年10月8日08:39:00
+* 获取当前数据库名以获取当前数据库的所有表名的字段"Tables_in_[dbname]"
 */
 class Install_model extends ES_model{
  
@@ -10,6 +13,7 @@ class Install_model extends ES_model{
  * 开始生成model
  */
   public function init(){
+   
     foreach($this->tables() as $t){
       echo $t.' <small style="color:#ccc">'.
            ($this->generate($t)?'success':'fail').
@@ -20,11 +24,12 @@ class Install_model extends ES_model{
  * 获取当前数据库下的所有的表
  * @return array
  */
-  private function tables(){
+  public function tables(){
     $sql = 'SHOW TABLES';
     $tables = array();
+    $tables_in_dbname = 'Tables_in_'.$this->_config('dbname');
     foreach($this->db->query($sql) as $t){
-      $tables[] = $t->Tables_in_fcmayi;
+      $tables[] = $t->$tables_in_dbname;
     }
     return $tables;
   }
@@ -35,7 +40,7 @@ class Install_model extends ES_model{
  * @return array
  */
   private function fields($table){
-    $this->tableName = str_replace($this->prefix(), '', $table);
+    $this->tableName = str_replace($this->_config(), '', $table);
     $sql = "SHOW COLUMNS FROM `{$table}`";
     $fields = array();
     foreach($this->db->query($sql) as $f){
@@ -48,9 +53,9 @@ class Install_model extends ES_model{
 /**
  * 表前缀
  */
-  private function prefix(){
+  private function _config($arg = 'prefix'){
     global $configs;
-    return $configs->database->prefix;
+    return $configs->database->$arg;
   }
   
 /**
@@ -89,7 +94,7 @@ $attrs .= <<<PHP
 PHP;
 
     $model = sprintf( $model, get_format_time(), ucfirst($this->tableName), rtrim($attrs) );
-    $n = file_put_contents($path, $model);
+    $n = file_exists($path) ? 0 : file_put_contents($path, $model);
     return $n > 0;
   }
 }
