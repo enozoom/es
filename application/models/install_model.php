@@ -24,7 +24,7 @@ class Install_model extends ES_model{
  * 获取当前数据库下的所有的表
  * @return array
  */
-  public function tables(){
+  private function tables(){
     $sql = 'SHOW TABLES';
     $tables = array();
     $tables_in_dbname = 'Tables_in_'.$this->_config('dbname');
