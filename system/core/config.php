@@ -1,10 +1,10 @@
 <?php
 defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
+
 /**
  * 读取配置文件参数
  * @author Joe e@enozoom.com
  * 2015年6月24日下午4:08:32
- *
  */
 
 final class Config{
