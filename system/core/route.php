@@ -95,10 +95,12 @@ class Route{
       $query = str_replace('.'.$suffix,'',$query);
     }
 
+    // 对url进行兼容处理
     // 如果第一个字符是/，去掉
     substr($query,0,1) === '/' && $query = substr($query,1);
     // 如果最后一个字符是/， 去掉
     substr($query,-1,1) === '/' && $query = substr($query,0,strlen($query)-1);
+
     // 分割参数
     $args = explode('/',$query);
     
