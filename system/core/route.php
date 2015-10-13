@@ -22,6 +22,8 @@
 * 2015年10月9日13:44:04
 * | 增加对控制器方法的访问限制
 * | 修饰符非public,或者方法名以_开头均不予前台显示
+* 2015年10月13日09:27:14
+* | 对以‘/’结尾和非‘/’结尾的url兼容
 * -----------------------------------------
 * cmdq = controller-mothod-directory-query
 */
@@ -95,6 +97,8 @@ class Route{
 
     // 如果第一个字符是/，去掉
     substr($query,0,1) === '/' && $query = substr($query,1);
+    // 如果最后一个字符是/， 去掉
+    substr($query,-1,1) === '/' && $query = substr($query,0,strlen($query)-1);
     // 分割参数
     $args = explode('/',$query);
     
