@@ -6,11 +6,25 @@
 if(!function_exists('auto_loader')){
 /**
  * 自动装载控制器类
+ * ---------------------
+ * 2015年10月13日13:29:35
+ * 增加对system/core的自动载入
+ * ---------------------
  * @param string $classname
- * @return void
+ * @return void|''
  */
   function auto_loader($classname){
+   
+    if(strpos($classname, 'ES_')!==FALSE){
+      $path = SYSPATH.'core/'.substr($classname,3).'.php';
+      if( file_exists($path) ){
+       require $path;
+       return '';
+      }
+    }
+    
     global $Route;
+    
     $classname = strtolower($classname);
     strpos($classname,'\\') && $classname = substr($classname,strripos($classname, '\\')+1);
     $paths = array(SYSPATH.'core',
@@ -25,10 +39,9 @@ if(!function_exists('auto_loader')){
       $path = "{$path}/{$classname}.php";
       if( file_exists($path) ){
          if(empty($Route) || $Route->cmdq['c'] != $classname){
-           include $path;
+           require $path;
            return '';
          }
-
       }
     }
   }
