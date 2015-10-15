@@ -4,6 +4,7 @@
 * 对uri进行解析
 * 实例化ES_Controller
 * 执行指定的方法并传入方法所需的值 
+* cmdq = controller-mothod-directory-query
 * -----------------------------------------
 * 2014年10月9日16:28:48
 * | 支持伪静态
@@ -24,10 +25,12 @@
 * | 修饰符非public,或者方法名以_开头均不予前台显示
 * 2015年10月13日09:27:14
 * | 对以‘/’结尾和非‘/’结尾的url兼容
+* 2015年10月13日13:50:46
+* | 增加对缓存的支持
 * -----------------------------------------
-* cmdq = controller-mothod-directory-query
+*
 */
-class Route{
+class ES_route{
   private $routes;
   private $dir_controller;
   private $default_method = 'index';
@@ -49,32 +52,44 @@ class Route{
     
     $query = $_SERVER['QUERY_STRING'];
     isset($_SERVER['SCRIPT_URL']) && $query = $_SERVER['SCRIPT_URL'];//SAE
-    
     empty($query) && $query = $_SERVER['REQUEST_URI'];
     
+    // 解析出 cmdq格式的参数url字符串，并对应$this->cmdq
     if( strlen($query)==1 || strpos($query,'/') === FALSE ){
-      
-      if(!isset($_GET['c']) && !isset($_GET['m']) && !isset($_GET['d'])){
-        foreach($this->routes as $route){
-          if($route->pattern == 'default'){
-            $query = $route->cmdq;
-            break;
-          }
-        }
-        
-      }
-      if($query == '/'){// 如果这种路径写法 /?d=public&c=test&m=aaa&q=1,2,3,4
-        $q = '';
-        foreach($_GET as $k=>$v) $q .= "&{$k}={$v}";
-        $query = substr($q,1);
-      }
+      $query = $this->dynamic_url($query);
     }else{// 可能设置的是静态路径
       $query = $this->static_url($query);
     }
-    
     $this->cmdq = $this->preg_controller($query);
-    $this->cls_instance($this->cmdq);
+    
+    // 实例化控制器
+    $this->cls_instance();
   }
+  
+/**
+  * URL是一个动态地址
+  * 将URL正确的解析成 c=&m=&d=&q= 字符串
+  * @param string $query
+  * @return string c=&m=&d=&q=
+  */
+  private function dynamic_url($query){
+    if(!isset($_GET['c']) && !isset($_GET['m']) && !isset($_GET['d'])){
+      foreach($this->routes as $route){
+        if($route->pattern == 'default'){
+         $query = $route->cmdq;
+         break;
+        }
+      }
+    }
+    
+    if($query == '/'){// 如果这种路径写法 /?d=public&c=test&m=aaa&q=1,2,3,4
+      $q = '';
+      foreach($_GET as $k=>$v) $q .= "&{$k}={$v}";
+      $query = substr($q,1);
+    }
+    return $query;
+  }
+  
   
 /**
   * URL被设置为伪静态化
@@ -82,9 +97,9 @@ class Route{
   * 
   * 将URL正确的解析成 c=&m=&d=&q= 字符串
   * @param string $query
-  * @return
+  * @return string c=&m=&d=&q=
   */
-  public function static_url($query){
+  private function static_url($query){
     global $configs;
     $suffix = $configs->config->suffix;
     // 不需要去的后缀
@@ -95,12 +110,10 @@ class Route{
       $query = str_replace('.'.$suffix,'',$query);
     }
 
-    // 对url进行兼容处理
     // 如果第一个字符是/，去掉
     substr($query,0,1) === '/' && $query = substr($query,1);
     // 如果最后一个字符是/， 去掉
     substr($query,-1,1) === '/' && $query = substr($query,0,strlen($query)-1);
-
     // 分割参数
     $args = explode('/',$query);
     
@@ -118,7 +131,7 @@ class Route{
         $url = preg_replace($preg,$route->cmdq,$query);
         //无特殊参数，或者是min压缩
         if( strpos($url,'/')===FALSE || strpos($url,'c=min')!==FALSE ){
-          return $url;          
+          return $url;
         }
       }
     }
@@ -179,10 +192,14 @@ class Route{
 * $cmd = array('c'=>'index','m'=>'index','d'=>'public','q'=>'a,b,c');
 * @return
 */  
-  private function cls_instance($cmd){
-    $dir = $this->dir_controller.$cmd['d'];
+  private function cls_instance(){
+    // 开始缓存
+    $cache = new ES_cache($this->cmdq);
+    $cache->read();
+    
+    $dir = $this->dir_controller.$this->cmdq['d'];
     is_dir($dir) || show_500('控制器文件路径不正确'.$dir);
-    $ctl_cls = $cmd['c']; 
+    $ctl_cls = $this->cmdq['c']; 
     
     require SYSPATH.'core/controller.php';
     // 拓展基本控制器基类
@@ -192,7 +209,7 @@ class Route{
     }
     
     // 各文件夹自定义控制器基类
-    $dir_controller = "{$dir}/e_{$cmd['d']}.php";
+    $dir_controller = "{$dir}/e_{$this->cmdq['d']}.php";
     if(file_exists($dir_controller)){
       require $dir_controller;
     }
@@ -204,23 +221,23 @@ class Route{
     
     // 增加命名空间的支持2015年9月9日23:25:15
     try{
-      $reflector = new ReflectionClass(ucfirst($cmd['d']).'\\'.$ctl_cls);
+      $reflector = new ReflectionClass(ucfirst($this->cmdq['d']).'\\'.$ctl_cls);
     }catch (Exception $e){
       $reflector = new ReflectionClass($ctl_cls);
     }
         
     $rMethod = null;
     try{
-      $rMethod = $reflector->getMethod($cmd['m']);
+      $rMethod = $reflector->getMethod($this->cmdq['m']);
     }catch(Exception $e){
-      show_500("控制器{$cmd['c']}方法{$cmd['m']}不存在");
+      show_500("控制器{$this->cmdq['c']}方法{$this->cmdq['m']}不存在");
     }
     $this->disable_method( $rMethod );
     
     $rMethod->isConstructor() && show_500('用默认函数的类需要有构造函数__construct()');
     $args = array();
-    if(!empty($cmd['q'])){// 如果使用汇总压缩css,js,则不能用,分割参数
-      $args = $cmd['c'] == 'min' ? array($cmd['q']) : explode(',',$cmd['q']);
+    if(!empty($this->cmdq['q'])){// 如果使用汇总压缩css,js,则不能用,分割参数
+      $args = $this->cmdq['c'] == 'min' ? array($this->cmdq['q']) : explode(',',$this->cmdq['q']);
     }
 
     $cls = $reflector->newInstance();
@@ -228,12 +245,15 @@ class Route{
     is_subclass_of($cls,'ES_controller') || show_500('控制器必须是ES_controller的子类');
     $rMethod->invokeArgs($cls,$args);
     $cls->closeDB();// 关闭数据库
+
+    $html = $cls->output->display(1);// 输出
+    $cache->save($html);
     
     $flag = $cls->load->config('config','compress_outpage');
     $flag && $cls->output->length() > 1024 && extension_loaded('zlib') && ob_start('ob_gzhandler');
-    $cls->output->display();// 输出
-    $flag && $cls->output->length() > 1024 && extension_loaded('zlib') && ob_end_flush();    
-   }
+      echo $html;
+    $flag && $cls->output->length() > 1024 && extension_loaded('zlib') && ob_end_flush();
+  }
    
 /**
  * 重写$_GET
