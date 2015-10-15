@@ -1,6 +1,4 @@
 <?php defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
-require SYSPATH.'core/load.php';
-require SYSPATH.'core/output.php';
 class ES_controller{
   private static $instance;
   public function __construct(){
@@ -41,4 +39,3 @@ class ES_controller{
     echo 'Hi,ES!';
   }
 }
-?>
