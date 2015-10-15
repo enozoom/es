@@ -20,4 +20,11 @@
 
 # 是否开启压缩
 "compress_outpage":"0",
+
+# 是否开启缓存
+"cache":"0",
+
+# 允许被缓存的控制器及方法,{"控制器文件夹":{"控制器名":"控制器方法,.."},..},*表示所有控制器方法
+"cache_allow":{"public":{"home":"index,demo"},"fenxiao":{"estate":"*"}},
+
 }
