@@ -43,8 +43,10 @@ class ES_load{
     is_file($file) || show_500('library不存在，'.$file);
     
     if( ($idx = strpos($cls,'/')) !== FALSE  ){
-      $parent_cls = dirname($file).'/'.substr($cls, 0,$idx).'.php';
-      if( file_exists($parent_cls) ){
+      $pcls = substr($cls, 0,$idx);
+      $parent_cls = dirname($file).'/'.$pcls.'.php';
+      // 2015年10月15日15:13:40 避免重复加载父类
+      if( file_exists($parent_cls) && !class_exists(ucfirst($pcls)) ){
         require $parent_cls;
       }
       $cls = substr($cls,$idx+1);
