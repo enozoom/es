@@ -1,13 +1,12 @@
-<?php
-defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
-
+<?php defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
 /**
  * 读取配置文件参数
  * @author Joe e@enozoom.com
  * 2015年6月24日下午4:08:32
+ *
  */
 
-final class Config{
+final class ES_config{
 	static $configs;
 
 /**
@@ -38,7 +37,7 @@ final class Config{
 		foreach(scandir($dir) as $config){
 			if(stripos($config, $suffix)!==FALSE){
 				$k = str_ireplace($suffix, '', $config);
-				$v = Config::readjsonstring("{$dir}/{$config}");
+				$v = self::readjsonstring("{$dir}/{$config}");
 				if($k=='constants'){// 常量们
 					foreach($v as $kk=>$vv) define($kk, $vv);
 				}else{
@@ -50,7 +49,7 @@ final class Config{
 	}
 	
 	final static function init(){
-		empty(Config::$configs) && Config::$configs = Config::readdir();
-		return Config::$configs;
+		empty(self::$configs) && self::$configs = self::readdir();
+		return self::$configs;
 	}
 }
