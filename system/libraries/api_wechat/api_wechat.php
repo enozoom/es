@@ -68,7 +68,7 @@ class Api_wechat{
  * @return string
  */  
   public function access_token(){
-    $token_file = APPPATH.'cache/wechat/'.$this->appid.'.json';
+    $token_file = mk_dir(APPPATH.'cache/wechat').$this->appid.'.json';
     $get = FALSE;// 是否需要再次远程获取
     if(!file_exists($token_file)){
       $get = TRUE;
@@ -113,17 +113,34 @@ class Api_wechat{
  */  
   public function jsapi_ticket(){
     // 从没有获取过access_token或者已经过期
-    if(empty($_SESSION['jsapi_ticket']) || $_SESSION['jsapi_ticket_expire']-time() <= 0 ){
+    $path = mk_dir(APPPATH.'cache/wechat').'ticket.json';
+    $get = FALSE;
+    
+    if(file_exists($path)){
+      $ticket = json_decode( file_get_contents($path) );
+      if($ticket->expires>time()){
+        return $ticket->ticket;
+      }else{
+       $get = TRUE;
+      }
+    }else{
+      $get = TRUE;
+    }
+    
+    if( $get ){
       $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi';
       $json = json_decode(curl_file_get_contents(sprintf($url,$this->access_token)));
-      if($json->errcode){
-         log_msg($json,'获取jsapi_ticket失败'); 
-         die('get jsapi_ticket fail!' );
+      if( $json->errcode ){
+        log_msg($json,'获取jsapi_ticket失败');
+        die('get jsapi_ticket fail!' );
+      }else{
+        $ticket = array('expires'=>time()+$json->expires_in-10,'ticket'=>$json->ticket);
+        file_put_contents($path, json_encode($ticket) );
+        return $json->ticket;
       }
-      $_SESSION['jsapi_ticket'] = $json->ticket;
-      $_SESSION['jsapi_ticket_expire'] = time()+$json->expires_in;// 过期的时间      
-    }    
-    return $_SESSION['jsapi_ticket'];
+    }
+    
+    return '';
   }
   
 /**
