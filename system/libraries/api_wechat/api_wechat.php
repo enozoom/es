@@ -87,7 +87,7 @@ class Api_wechat{
         log_msg($json,'获取公共access_token失败');
         die('get access_token fail!' );
       }
-      $data = array('expires'=>time()+$json->expires_in-10,
+      $data = array('expires'=>time()+$json->expires_in,
                     'access_token'=>$json->access_token);
       file_put_contents($token_file, json_encode($data) );
       return $json->access_token;
@@ -134,7 +134,7 @@ class Api_wechat{
         log_msg($json,'获取jsapi_ticket失败');
         die('get jsapi_ticket fail!' );
       }else{
-        $ticket = array('expires'=>time()+$json->expires_in-10,'ticket'=>$json->ticket);
+        $ticket = array('expires'=>time()+$json->expires_in,'ticket'=>$json->ticket);
         file_put_contents($path, json_encode($ticket) );
         return $json->ticket;
       }
