@@ -47,6 +47,7 @@ if(!function_exists('auto_loader')){
   }
 }
 
+
 if(!function_exists('__shutdown')){
 /**
  * 关闭页面时调用
@@ -95,9 +96,7 @@ if(!function_exists('curl_post_data')){
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);    
     $return = curl_exec($ch);
-    
-//    var_dump($return);
-    
+    var_dump($return);
     curl_errno($ch) && $return = '';// 出现异常
     curl_close($ch);
     $is_json && $return = json_decode($return);
@@ -240,8 +239,14 @@ if(!function_exists('log_msg')){
     ob_end_clean();
     $path = mk_dir('./logs/'.$dir,1);
     $file = date('Y-m-d').'.log';
-    $m = '【'.get_format_time().'】'.$tit.PHP_EOL.$m.PHP_EOL.PHP_EOL;
-    file_put_contents($path.$file,$m.PHP_EOL,FILE_APPEND);    
+
+    // 被调用信息
+    $trace = debug_backtrace()[0];
+    $f = preg_replace('@.*(application.*)@','$1',$trace['file']);
+    $trace_inf = " >>{$f}，{$trace['line']}行调用";
+    
+    $m = '【'.get_format_time().'】'.$tit.PHP_EOL.$trace_inf.PHP_EOL.$m.PHP_EOL.PHP_EOL;
+    file_put_contents($path.$file,$m,FILE_APPEND);
   }
 }
 
