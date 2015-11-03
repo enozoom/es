@@ -69,4 +69,23 @@ abstract class Wechat_controller extends ES_controller{
  * }
  */  
   public abstract function menus();
+  
+/**
+ * 根据微信跳转而来的带有code参数的链接
+ * 获取当前微信用户对应当前公众号的唯一openid
+ * @param string $code
+ * 直接输出openid
+ */
+  public function openid($code){
+    die( $this->wechat->user_openid($code) );
+  }
+  
+/**
+ * 生成一个微信跳转的网址
+ * 需要post接收一个url参数
+ */
+  public function wechat_link(){
+   $url = empty($_POST['url']) ? '' : $_POST['url'];
+   die( empty($url)? '': $this->wechat->wechat_openid_link($url));
+  }
 }
