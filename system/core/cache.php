@@ -55,6 +55,7 @@ class ES_cache{
    * @param array $cmdq array(c=>控制器,m=>控制器方法,d=>控制器文件夹,q=>控制器方法参数)
   */
   public function __construct($cmdq=array()){
+   
     global $configs;
     // 是否开启缓存
     $this->open = $configs->config->cache;
