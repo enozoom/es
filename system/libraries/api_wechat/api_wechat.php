@@ -1,9 +1,10 @@
 <?php defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
 
-require 'helper_arr2xml.php';// 数组转xml
-require 'helper_reply.php';  // 微信回复消息
-require 'helper_crypt.php';  // 微信消息加解密
+require 'helper_arr2xml.php';   // 数组转xml
+require 'helper_reply.php';     // 微信回复消息
+require 'helper_crypt.php';     // 微信消息加解密
 require 'helper_material.php';  // 微信消息加解密
+require 'helper_wjs.php';       // 网页js交互获取分享，用户等信息
 
 /**
  * 微信公众号基本类
@@ -108,42 +109,6 @@ class Api_wechat{
   }
 
 /**
- * 获取JS票据
- * @return string
- */  
-  public function jsapi_ticket(){
-    // 从没有获取过access_token或者已经过期
-    $path = mk_dir(APPPATH.'cache/wechat').'ticket.json';
-    $get = FALSE;
-    
-    if(file_exists($path)){
-      $ticket = json_decode( file_get_contents($path) );
-      if($ticket->expires>time()){
-        return $ticket->ticket;
-      }else{
-       $get = TRUE;
-      }
-    }else{
-      $get = TRUE;
-    }
-    
-    if( $get ){
-      $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi';
-      $json = json_decode(curl_file_get_contents(sprintf($url,$this->access_token)));
-      if( $json->errcode ){
-        log_msg($json,'获取jsapi_ticket失败');
-        die('get jsapi_ticket fail!' );
-      }else{
-        $ticket = array('expires'=>time()+$json->expires_in,'ticket'=>$json->ticket);
-        file_put_contents($path, json_encode($ticket) );
-        return $json->ticket;
-      }
-    }
-    
-    return '';
-  }
-  
-/**
  * 生成签名
  * @param string $noncestr     随机字符串
  * @param string $jsapi_ticket JS票据
@@ -153,41 +118,37 @@ class Api_wechat{
  * @return
  */
   public function jsapi_sign($noncestr,$timestamp,$url=''){
-    $jsapi_ticket = $this->jsapi_ticket();
-    empty($url) && $url = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-    return $this->_jsapi_sign($noncestr,$jsapi_ticket,$timestamp,$url);
+    return WJS::jsapi_sign($this->access_token, $noncestr, $timestamp, $url);
   }
-  
-  private function _jsapi_sign($noncestr,$jsapi_ticket,$timestamp,$url){
-    $reflect = new ReflectionMethod( __CLASS__,__FUNCTION__ );
-    $_keys = array();
-    foreach( $reflect->getParameters() as $param){
-      $_keys[] = $param->name;
-    }
-    $args = array_combine($_keys,func_get_args());
-    ksort($args);
-    // 这里必须将特殊字符进行编码
-    $query = str_replace( array('%2F', '%3A', '%3F', '%3D', '%26'),
-                          array('/', ':', '?', '=', '&'),
-                          http_build_query($args));
-    return sha1($query);
-  }
+
 //--------------------------------------------------------------------------------------
 // 微信的菜单方法
 //--------------------------------------------------------------------------------------
 
 /**
  * 生成一个微信获权跳转回来的地址
- * @param string $redirect 跳转地
- * @param string $scope 范围：snsapi_base 静默模式，snsapi_userinfo 需手动确定
- * @return  string
+ * @param  string $redirect 跳转地
+ * @param  string $scope 范围：snsapi_base 静默模式，snsapi_userinfo 需手动确定
+ * @return string
  */
-  public function wechat_openid_link($redirect,$scope='snsapi_userinfo'){
+  public function wechat_openid_link($redirect,$scope='snsapi_base'){
     $https = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=ES#wechat_redirect';
     $url = str_replace('http%3A%2F%2F','http://', urlencode($redirect));
     $url = urlencode($redirect);
     return sprintf($https,$this->appid,$url,$scope);
   }
+  
+  /**
+   * 根据微信跳转而来的带有code参数的链接
+   * 获取当前微信用户对应当前公众号的唯一openid
+   * @param string $code
+   * @return string
+   */
+  public function user_openid($code){
+    return WJS::user_openid($code, $this->appid, $this->appSecret);
+  }
+  
+  
   
 /**
  * 生成底部菜单
