@@ -6,4 +6,9 @@
 "ENO_AUTHOR":"Joe",
 "ENO_LINK":"http://www.enozoom.com",
 "ENO_TEL":"15552928239",
+
+# 微信设置
+"APP_ID":"appid",
+"APP_SECRET":"appsecret",
+"ENCODING_AES_KEY":"encoding_aes_key",
 }
