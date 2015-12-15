@@ -1,1 +1,1 @@
-<?php echo generate_html5_head($title,$css,$keywords,$description)?>
+<?php echo generate_html5_head($title,$css,$description,$keywords,true)?>
