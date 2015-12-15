@@ -102,8 +102,8 @@
 
   如果引用的css,js是一个外部链接，如`http://cdn.com/style.css`,则应该这样填写,`public $css = '//cdn.com/style,base,home.index'`,系统会自动获取，但不会产生文件的合并，即最终将生成以下HTML：  
 
-    <link rel="stylesheet" href="//cdn.com/style.css">  
-    <link rel="stylesheet" href="base,home.index">  
+    `<link rel="stylesheet" href="//cdn.com/style.css">`  
+    `<link rel="stylesheet" href="base,home.index">`  
 
 ## 关于图片的引用
   使用相对路径进行引用，如`./uploads/build/whoami.png`,如果引用则`<img src="/uploads/build/whoami.png" alt="" />`
