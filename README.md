@@ -98,7 +98,11 @@
   1. 控制器类属性`public $css = 'base,dom';`或者`public $js = 'base.jquery.min';`
   2. 控制器在调用`protected function view($data=array(),...){}`中传入的`$data`中设置`$data['css']`
   css,js默认通过控制器`min`(`./application/controllers/common/min.php`)调用。  
-  3. 设置时，只需要填入css|js的在默认存放文件夹中的名字，如`./theme/default_theme_path/home.index.css`,只需要填入`public $css = 'home.index';`或者`$data['css'] = 'home.index'`,多个引用，用半角逗号隔开，如`public $css = 'base,home.index'`，当然默认控制器的`view()`方法能够自动引用与控制器名和控制器方法名相同的css|js  
+  3. 设置时，只需要填入css|js的在默认存放文件夹中的名字，如`./theme/default_theme_path/home.index.css`,只需要填入`public $css = 'home.index';`或者`$data['css'] = 'home.index'`,多个引用，用半角逗号隔开，如`public $css = 'base,home.index'`，当然默认控制器的`view()`方法能够自动引用与控制器名和控制器方法名相同的css|js    
+
+  如果引用的css,js是一个外部链接，如http://cdn.com/style.css,则应该这样填写,`public $css = '//cdn.com/style,base,home.index'`,系统会自动获取，但不会产生文件的合并，即最终将生成以下HTML：
+    <link rel="stylesheet" href="//cdn.com/style.css">
+    <link rel="stylesheet" href="base,home.index">
 
 ## 关于图片的引用
   使用相对路径进行引用，如`./uploads/build/whoami.png`,如果引用则`<img src="/uploads/build/whoami.png" alt="" />`
@@ -109,3 +113,8 @@
     以避免完善后的model不被覆盖（如果model已经存在则不会再次生成），请一定进行第2条操作。  
   1. 访问`http://Yourhost/common/model_install`，系统会自动在`./application/models/`下生成ES_model的子类。
   2. 生成结束后，请删除`./application/controllers/common/model_install.php`文件。
+
+
+## 关于缓存的使用
+  ES使用了文件缓存，将页面完全静态化后存放在`./application/cache/html`文件夹下，文件缓存包括了三部分，"数据库查询结果缓存","css|js合并压缩文件","完全静态化文件"。
+  建议IIS服务器开启wincache，文件缓存对服务器io有依赖。
