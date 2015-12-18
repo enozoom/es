@@ -44,6 +44,21 @@ if(!function_exists('auto_loader')){
          }
       }
     }
+    
+    // 如果某控制器extend的父控制器在其同一文件夹下，且与当前文件夹命名不同
+    $path =  debug_backtrace();
+    if(count($path)>2 && !empty($path[1]['file'])){
+      $path = $path[1]['file'];
+      $i = strrpos($path, '/');
+      empty($i) && $i = strrpos($path, '\\');
+      if(!empty($i)){
+        $path = substr( $path, 0, $i+1 ).$classname.'.php';
+        
+        if( file_exists($path) ){
+          require $path;
+        }
+      }
+    }
   }
 }
 
