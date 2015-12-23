@@ -1,10 +1,8 @@
-<?php 
-defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
+<?php defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
 /**
 * --------------------------------------------------------------------------
 * | 直接作用于数据库
 * | 用来在单站多库中调取相应数据
-* | 仅仅进行查询操作！
 * --------------------------------------------------------------------------
 * 
 * JOE
@@ -49,7 +47,17 @@ defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
 *     $this->rollback();
 *   }
 * $this->commit();
-* 
+* --------------------------
+* 修复_get_totalnum() 
+* 方法执行的语句不正确则默认返回0
+* --------------------------
+* 2015年12月4日10:20:10
+* 增加log_error()
+* 更快速的获知出现数据库错误的执行调用方法和控制器
+* --------------------------
+* 2015年12月23日11:08:24
+* 修复 _get_with_join()
+* Column '关联键' in where clause is ambiguous的问题
 */
 class ES_Mysqli{
   protected $host     = '';
@@ -64,7 +72,7 @@ class ES_Mysqli{
  
   public function __construct($configs){
     foreach( get_class_vars(__CLASS__) as $var=>$val){
-    	empty($configs->$var) || $this->$var = $configs->$var;
+      empty($configs->$var) || $this->$var = $configs->$var;
     }
     empty($configs->host) || $this->conn();
   }
@@ -75,38 +83,38 @@ class ES_Mysqli{
 * @return ES_Mysqli
 */  
   public static function get_instance($configs){
-  	self::$instance instanceof self || self::$instance = new self($configs);
+    self::$instance instanceof self || self::$instance = new self($configs);
     return self::$instance;    
-	}
+  }
   
 /**
 * 连接数据库，返回一个mysqli对象
 * @return Mysqli
 */  
   protected function conn(){
-  	if(!$this->mysqli instanceof Mysqli){
-	    $mysqli = new Mysqli($this->host, $this->user, $this->password, $this->dbname,$this->port);
-	    if(mysqli_connect_error()){
-	      printf("E_Database connect failed: %s\n", mysqli_connect_error());
-	    }else{
-	      $this->mysqli = &$mysqli;
-	      $this->mysqli->set_charset("utf8");
-	    }			
-	}
-  	
+    if(!$this->mysqli instanceof Mysqli){
+      $mysqli = new Mysqli($this->host, $this->user, $this->password, $this->dbname,$this->port);
+      if(mysqli_connect_error()){
+        printf("E_Database connect failed: %s\n", mysqli_connect_error());
+      }else{
+        $this->mysqli = &$mysqli;
+        $this->mysqli->set_charset("utf8");
+      }      
+  }
+    
   }
 /**
 * 开启或者关闭事务
 * @param bool $io 默认关闭
 * @return void
 */  
- 	public function transaction($io = FALSE){
- 	  $this->transaction_helper();
-	}
+   public function transaction($io = FALSE){
+     $this->transaction_helper();
+  }
   
 /**
  * 获取当前autocommit的值
- */	
+ */  
     protected function autocommit_status(){
       $result = $this->mysqli->query("SELECT @@autocommit");
       return $result->fetch_row()[0];
@@ -116,38 +124,38 @@ class ES_Mysqli{
 * 提交事务，技术事务
 * @return void
 */
-	public function commit(){
-		$this->mysqli->commit();
-	}
-	
+  public function commit(){
+    $this->mysqli->commit();
+  }
+  
 /**
  * 回滚
  */
-	public function rollback(){
-	  $this->mysqli->rollback();
-	}
-	
+  public function rollback(){
+    $this->mysqli->rollback();
+  }
+  
 /**
  * 事务助手
  * PHP5.5以上有新事务功能
  */
-	protected function transaction_helper(){
-	  if(PHP_VERSION >= 5.5){
-	    $this->mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-	  }else{
-	    $this->mysqli->query('START TRANSACTION');
-	  }
-	}
+  protected function transaction_helper(){
+    if(PHP_VERSION >= 5.5){
+      $this->mysqli->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+    }else{
+      $this->mysqli->query('START TRANSACTION');
+    }
+  }
 /**
 * 选择（更换）数据库
 * @param $dbname 
 * @return void
 */
-	public function select_db($dbname,$prefix=''){
-		$this->mysqli->select_db($dbname);
-		$this->dbname = $dbname;
-		empty($prefix) || $this->prefix = $prefix;
-	}
+  public function select_db($dbname,$prefix=''){
+    $this->mysqli->select_db($dbname);
+    $this->dbname = $dbname;
+    empty($prefix) || $this->prefix = $prefix;
+  }
   
 /**
 * 关闭连接
@@ -155,77 +163,77 @@ class ES_Mysqli{
 */  
   public function close(){
     if(!empty($this->mysqli)){
-    	$this->mysqli->close();
-    	$this->mysqli = NULL;
+      $this->mysqli->close();
+      $this->mysqli = NULL;
     }
   }
   
 /**
 * 插入一条数据
-* @param array $data array(field=>val..)
+* @param array  $data array(field=>val..)
 * @param string $tablename 
 * 
 * @return int 新插入的PKID,如果插入失败返回0，无自增长主键的始终返回1
 */  
-	public function _insert($data,$tablename){
-		$sql = "INSERT INTO `{$this->prefix}{$tablename}`";
-		$fields = '';
-		$vals = '';
-		foreach($data as $field=>$val){
-			$fields .= ",`{$field}`";
-			$vals .= ",'". $this->_escape($val) ."'";
-		}
-		
-		$sql .= '('. substr($fields,1) .') VALUES ';
-		$sql .= '('. substr($vals,1) .')';
-		
-		$result = $this->query($sql);
-		
-		// 以解决无自增长主键的表返回始终1
-		$i = $this->mysqli->insert_id;
-		$result && $i == 0 && $i = 1;
-		
-		return $result ? $i : 0;
-	}
-	
+  public function _insert($data,$tablename){
+    $sql = "INSERT INTO `{$this->prefix}{$tablename}`";
+    $fields = '';
+    $vals = '';
+    foreach($data as $field=>$val){
+      $fields .= ",`{$field}`";
+      $vals .= ",'". $this->_escape($val) ."'";
+    }
+    
+    $sql .= '('. substr($fields,1) .') VALUES ';
+    $sql .= '('. substr($vals,1) .')';
+    
+    $result = $this->query($sql);
+    
+    // 以解决无自增长主键的表返回始终1
+    $i = $this->mysqli->insert_id;
+    $result && $i == 0 && $i = 1;
+    
+    return $result ? $i : 0;
+  }
+  
 /**
 * 更新一条数据
-* @param int 	$pkid
-* @param array 	$data
-* @param string $pkfield
-* @param string $tablename
+* @param int     $pkid
+* @param array   $data
+* @param string  $pkfield
+* @param string  $tablename
 * 
 * @return int 被更新的主键
 */  
   public function _update($pkid,$data,$pkfield,$tablename){
-		$set = '';
-		foreach($data as $field=>$val){
-			$set .= ", `{$field}` = '{$val}'";
-		}
-		$set = substr($set,1);
-		$where = "`{$pkfield}` = '".$this->_escape($pkid)."'";
-		
-		// 判断有满足更新条件的数
-		$total = $this->_get_totalnum($where, $tablename);
-		if($total == 0)return 1;// 无满足条件数据则直接返回更新成功
-		
-		$tablename = $this->tablename($tablename);
-		$sql = "UPDATE `{$tablename}` SET {$set} WHERE {$where}";
-		$result = $this->query($sql);
-		
-		return $result?$pkid:0;
-	}
-	
+    $set = '';
+    foreach($data as $field=>$val){
+      $set .= ", `{$field}` = '{$val}'";
+    }
+    $set = substr($set,1);
+    $where = "`{$pkfield}` = '".$this->_escape($pkid)."'";
+    
+    // 判断有满足更新条件的数
+    $total = $this->_get_totalnum($where, $tablename);
+    if($total == 0)return 1;// 无满足条件数据则直接返回更新成功
+    
+    $tablename = $this->tablename($tablename);
+    $sql = "UPDATE `{$tablename}` SET {$set} WHERE {$where}";
+    $result = $this->query($sql);
+    
+    return $result?$pkid:0;
+  }
+  
 /**
  * 删除数据
  * @param string $where
  * @param string $tablename
- */	
-	public function delete($where,$tablename){
-		$sql = "DELETE FROM `{$this->prefix}{$tablename}` WHERE {$where}";
-		return $this->query($sql);
-	}
-	
+ */  
+  public function delete($where,$tablename){
+    $sql = "DELETE FROM `{$this->prefix}{$tablename}` WHERE {$where}";
+    return $this->query($sql);
+  }
+  
 /**
 * 获取一组对象
 * @param string $tablename 数据表名
@@ -262,8 +270,8 @@ class ES_Mysqli{
 */
   public function _get_by_PKID($id,$pkfield,$tablename,$select='*'){
     $result = $this->_get($tablename,
-    					"`{$pkfield}` = '".$this->_escape($id)."'",
-    					$select);
+              "`{$pkfield}` = '".$this->_escape($id)."'",
+              $select);
     return empty($result)?FALSE:$result[0];
   }
   
@@ -275,11 +283,12 @@ class ES_Mysqli{
 * @return int
 */ 
   public function _get_totalnum($where,$tableName,$distinct=''){
-	$tableName = $this->tablename($tableName);
+    $tableName = $this->tablename($tableName);
     $sql = 'SELECT COUNT(%s) AS count FROM %s';
     $sql = sprintf($sql,empty($distinct)?'*':"DISTINCT $distinct",$tableName);
     empty($where) ||  $sql .= " WHERE {$where}";
     $count = $this->query($sql);
+    if( is_bool($count)) return 0;
     return (int)$count[0]->count;
   }
 
@@ -287,43 +296,44 @@ class ES_Mysqli{
 * 获取表关联数据
 * 
 * @param string $tablename 当前表
-* @param string $relid		关联表外键
-* @param string $fktable	关联表
-* @param string $tableid	表中有外键关联的字段
-* @param string $where		条件
-* @param string $select     字段
-* @param string $rel        关联操作符 LEFT,RIGHT,INNER
-* @param string $orderby	排序
-* @param string $limit		数量，起点数
+* @param string $relid     关联表外键
+* @param string $fktable   关联表
+* @param string $tableid   表中有外键关联的字段
+* @param string $where     条件
+* @param string $select    字段
+* @param string $rel       关联操作符 LEFT,RIGHT,INNER
+* @param string $orderby   排序
+* @param string $limit     数量，起点数
 * 
 * @return array(obj..)
 */
-	public function _get_with_join($tablename,
+  public function _get_with_join($tablename,
                                    $tableid,
                                    $fktable,
-                                   $relid,																 
+                                   $relid,
                                    $where='',
                                    $select='*',
-                                   $rel='INNER',																 
+                                   $rel='INNER',
                                    $orderby=FALSE,
                                    $limit=FALSE){
-																 	
-		empty($select) && $select = '*';
-		$select == '*' || 
-		$select = '`'.str_replace(array(',','.'),array('`,`','`.`'),clean_wordblank($select)).'`';
-		
-		$tablename = $this->tablename($tablename);
-		$fktable = $this->tablename($fktable);
-		
-		$sql = "SELECT {$select} FROM `{$tablename}`";
-		$sql .= " {$rel} JOIN `{$fktable}` ON `{$tablename}`.`{$tableid}` = `{$fktable}`.`{$relid}` ";
-		
+                                   
+    empty($select) && $select = '*';
+    $select == '*' || 
+    $select = '`'.str_replace(array(',','.'),array('`,`','`.`'),clean_wordblank($select)).'`';
+    
+    $tablename = $this->tablename($tablename);
+    $fktable = $this->tablename($fktable);
+    
+    $sql = "SELECT {$select} FROM `{$tablename}`";
+    $sql .= " {$rel} JOIN `{$fktable}` ON `{$tablename}`.`{$tableid}` = `{$fktable}`.`{$relid}` ";
+    
+    empty($where)   ||  $where = str_replace($tableid,"`{$tablename}`.`{$tableid}`",$where);
     empty($where)   ||  $sql .= " WHERE ".$this->_where($where);;
     empty($orderby) ||  $sql .= " ORDER BY $orderby";
     empty($limit)   ||  $sql .= " LIMIT $limit";
     
     return $this->query($sql);
-	}
+  }
 
 /**
 * 对where进行过滤
@@ -331,20 +341,20 @@ class ES_Mysqli{
 * 
 * @return string
 */
-	public function _where($where){
-		if(empty($where)) return '';
-		// 基本过滤,条件句中不能含有DML,DDL语句
-		foreach(array('select','delete','update','drop','create','alter') as $dl){
-			if(!stripos($where,$dl)===FALSE){
-				die('SQL含非法字符');
-			}
-		}
-		return $where;
-	}
-	
-	public function _escape($str=''){
-		return empty($str)?'':$this->mysqli->real_escape_string($str);
-	}
+  public function _where($where){
+    if(empty($where)) return '';
+    // 基本过滤,条件句中不能含有DML,DDL语句
+    foreach(array('select','delete','update','drop','create','alter') as $dl){
+      if(!stripos($where,$dl)===FALSE){
+        die('SQL含非法字符');
+      }
+    }
+    return $where;
+  }
+  
+  public function _escape($str=''){
+    return empty($str)?'':$this->mysqli->real_escape_string($str);
+  }
 
 /**
 * 执行SQL
@@ -353,16 +363,14 @@ class ES_Mysqli{
 * @return array(obj..)
 */  
   public function query($sql){
-  	$this->last_query = $sql;  	
+    $this->last_query = $sql;   
     if(!$_result = $this->mysqli->query($sql)){
-      log_msg($this->mysqli->error.'<br>'.$sql,'MYSQL数据异常');
+      $this->log_error();
       return FALSE;
-	}
+    }
 
     if(!$_result instanceof MySQLi_Result ){// INSERT,UPDATE返回值不是Result
-      if(!$_result){
-        log_msg($this->mysqli->error.'<br>'.$sql,'MYSQL数据异常');
-      }
+      empty( $_result ) && $this->log_error();
       return $_result;
     }
     
@@ -373,7 +381,6 @@ class ES_Mysqli{
       }
     }
     $_result->close();
-//    $this->close();
     return $result;
   }
   
@@ -383,24 +390,44 @@ class ES_Mysqli{
 * @return string
 */  
   public function last_query(){
-		return $this->last_query;
-	}
+    return $this->last_query;
+  }
 /**
 * 实际表名
 * @param string $tablename
 * @param string $prefix 默认前缀
 * @return string
-*/	
-	protected function tablename($tablename,$prefix='e_'){
-		if(strpos($tablename,$prefix) === FALSE || strpos($tablename,$prefix) > 0){
-			$tablename = $this->prefix.$tablename;         
-    	}
-    	return $tablename;
-	}
+*/  
+  protected function tablename($tablename,$prefix='e_'){
+    if(strpos($tablename,$prefix) === FALSE || strpos($tablename,$prefix) > 0){
+      $tablename = $this->prefix.$tablename;         
+      }
+      return $tablename;
+  }
 /**
  * 当前数据库名
- */	
-	public function dbname(){
-		return $this->dbname;
-	}
+ */  
+  public function dbname(){
+    return $this->dbname;
+  }
+  
+/**
+ * 记录发生数据库操作错误的调用方法及其控制器
+ */
+  protected function log_error(){
+   $trace = '';
+   $debugs = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+   foreach($debugs as $i=>$t){
+    // 过滤掉mysqli的部分以及反射前的部分
+    if( $i > 1 && $i < count($debugs)-4 ){
+     empty($t['file']) && $t['file'] = '控制器'.$t['class'];
+  
+     $_line = '**';
+     for($j=0;$j<$i;$j++) $_line .= '>';
+     $trace .= $_line.$t['file'].'，'.(empty($t['line'])?'':$t['line'].'行，').'方法'.$t['function'].PHP_EOL;
+    }
+  
+   }
+   log_msg($this->mysqli->error.PHP_EOL.'详情：'.PHP_EOL.$trace,'MYSQL数据异常');
+  }
 }
