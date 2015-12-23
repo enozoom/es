@@ -308,18 +308,19 @@ class ES_Mysqli{
 * @return array(obj..)
 */
   public function _get_with_join($tablename,
-                                   $tableid,
-                                   $fktable,
-                                   $relid,
-                                   $where='',
-                                   $select='*',
-                                   $rel='INNER',
-                                   $orderby=FALSE,
-                                   $limit=FALSE){
+                                 $tableid,
+                                 $fktable,
+                                 $relid,
+                                 $where='',
+                                 $select='*',
+                                 $rel='INNER',
+                                 $orderby=FALSE,
+                                 $limit=FALSE){
                                    
     empty($select) && $select = '*';
     $select == '*' || 
     $select = '`'.str_replace(array(',','.'),array('`,`','`.`'),clean_wordblank($select)).'`';
+	$select = str_replace("`{$tableid}`", "`{$tablename}`.`{$tableid}`", $select);
     
     $tablename = $this->tablename($tablename);
     $fktable = $this->tablename($fktable);
