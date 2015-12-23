@@ -293,7 +293,7 @@ class ES_Mysqli{
   }
 
 /**
-* 获取表关联数据
+* 获取两表关联数据
 * 
 * @param string $tablename 当前表
 * @param string $relid     关联表外键
@@ -304,7 +304,7 @@ class ES_Mysqli{
 * @param string $rel       关联操作符 LEFT,RIGHT,INNER
 * @param string $orderby   排序
 * @param string $limit     数量，起点数
-* 
+* @param array  $ambiguous 两个表中都存在的字段
 * @return array(obj..)
 */
   public function _get_with_join($tablename,
@@ -315,25 +315,33 @@ class ES_Mysqli{
                                  $select='*',
                                  $rel='INNER',
                                  $orderby=FALSE,
-                                 $limit=FALSE){
+                                 $limit=FALSE,
+                                 $ambiguous=array()){
                                    
     empty($select) && $select = '*';
     $select == '*' || 
     $select = '`'.str_replace(array(',','.'),array('`,`','`.`'),clean_wordblank($select)).'`';
-	$select = str_replace("`{$tableid}`", "`{$tablename}`.`{$tableid}`", $select);
     
     $tablename = $this->tablename($tablename);
     $fktable = $this->tablename($fktable);
     
     $sql = "SELECT {$select} FROM `{$tablename}`";
-    $sql .= " {$rel} JOIN `{$fktable}` ON `{$tablename}`.`{$tableid}` = `{$fktable}`.`{$relid}` ";
+    $sql .= ' %s';//使用占位符防止多次替换$ambiguous
+    $join = " {$rel} JOIN `{$fktable}` ON `{$tablename}`.`{$tableid}` = `{$fktable}`.`{$relid}` ";
     
-    empty($where)   ||  $where = str_replace($tableid,"`{$tablename}`.`{$tableid}`",$where);
-    empty($where)   ||  $sql .= " WHERE ".$this->_where($where);;
-    empty($orderby) ||  $sql .= " ORDER BY $orderby";
-    empty($limit)   ||  $sql .= " LIMIT $limit";
+    $ambiguous[] = $relid;
+    array_unique($ambiguous);
     
-    return $this->query($sql);
+    empty($where)     ||  $sql .= " WHERE ".$this->_where($where);;
+    empty($orderby)   ||  $sql .= " ORDER BY $orderby";
+    empty($limit)     ||  $sql .= " LIMIT $limit";
+    
+    
+    foreach($ambiguous as $field){
+      $sql = str_replace($field, "`{$fktable}`.`{$field}`", $sql);
+    }
+    $sql = str_replace('``', '`',sprintf($sql,$join));
+    return $this->query( $sql);
   }
 
 /**
