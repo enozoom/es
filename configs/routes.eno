@@ -4,9 +4,15 @@
 #---------
 
 # 默认路由
-{"pattern":"default","cmdq":"d=public&c=home"},
+{"pattern":"default","cmdq":"d=esweb&c=home"},
 
 # 合并css,js
 {"pattern":"min\/(.+\\.(?:cs|j|les)s)","cmdq":"d=common&c=min&m=index&q=$1"},
+
+# 生成model
+{"pattern":"install\/([^\/]+)","cmdq":"d=common&c=install&m=$1"},
+
+# 隐藏esweb
+{"pattern":"home\/([^\/]+)","cmdq":"d=esweb&c=home&m=$1"},
 
 ]

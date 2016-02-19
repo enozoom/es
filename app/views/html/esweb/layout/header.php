@@ -1,0 +1,1 @@
+<?php echo \ES\helpers\generate_html5_head($title,$css,$description,$keywords,true)?>

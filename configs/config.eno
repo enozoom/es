@@ -10,10 +10,10 @@
 "timer":"0",
 
 # 页面默认后缀
-"suffix":"enozoomstudio",
+"suffix":"es",
 
 # 默认css,js,less的存放文件路径，不含./theme
-"theme_path":"public/2015",
+"theme_path":"esweb/2015",
 
 # 默认的当前url，如http://www.enozoom.com/
 "base_url":"",
@@ -26,5 +26,8 @@
 
 # 允许被缓存的控制器及方法,{"控制器文件夹":{"控制器名":"控制器方法,.."},..},*表示所有控制器方法
 "cache_allow":{"public":{"home":"index,demo"},"fenxiao":{"estate":"*"}},
+
+# 加密密钥，通过密钥生成的密码不可逆，如密码。
+"encryption_key":"yourencryptionkey",
 
 }

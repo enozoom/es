@@ -4,7 +4,7 @@
 #---------
 
 #数据库驱动的类名(类名和文件名一致，区别在于大小写)
-"driver":"ES_Mysqli",
+"driver":"\\ES\\database\\ES_Mysqli",
 
 # 数据库地址
 "host":"localhost",

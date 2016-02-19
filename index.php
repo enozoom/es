@@ -17,8 +17,8 @@ date_default_timezone_set('Asia/Chongqing');
  * SYSPATH 核心系统文件，不建议修改，版本升级可直接替换全部内容
  * -------------------------------------
  */
-define('APPPATH','application/');
-define('SYSPATH','system/');
+define('APPPATH','app/');
+define('SYSPATH','es/');
 
 /**
  * -------------------------------------
