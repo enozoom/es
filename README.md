@@ -38,10 +38,10 @@
 >>404.php
 500.php
 
->helpers *辅助函数库*
-  libraries *类库*
-  models *数据模型*
-  views *视图文件*
+>helpers *辅助函数库*  
+  libraries *类库*  
+  models *数据模型*  
+  views *视图文件*  
 >>html
 >>>esweb *默认前端视图文件夹*
 >>>>layout *公共头尾文件夹*
@@ -55,15 +55,15 @@
 
 ### configs *配置文件*
 >config.eno *基本设置*
-  constants.eno *全局常量*
-  database.eno *数据库设置*
-  routes.eno *路由设置*
+>constants.eno *全局常量*
+>database.eno *数据库设置*
+>routes.eno *路由设置*
 
 ### es *框架文件*
 >core *核心文件*
-  libraries *核心类库*
-  helpers *核心辅助函数*
-  database *数据库*
+>libraries *核心类库*
+>helpers *核心辅助函数*
+>database *数据库*
 
 ###logs *日志 需要具有读写权限*
 >def *默认日志文件夹*
