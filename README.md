@@ -113,7 +113,7 @@
 ## 关于图片的引用
   使用相对路径进行引用，如`./uploads/build/whoami.png`,如果引用则`<img src="/uploads/build/whoami.png" alt="" />`
 
-## 自动生成ES_model子类
+## 自动生成`\es\core\Model`子类
     系统会自动生成基本的`\es\core\Model`子类，操作也非常简单，  
     虽然能够生成基本的`\es\core\Model`，但更多的数据库交互，仍建议手动进行完善，  
     以避免完善后的model不被覆盖（如果model已经存在则不会再次生成），请一定进行第2条操作。  
