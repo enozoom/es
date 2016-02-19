@@ -24,19 +24,19 @@
 ## 文件结构
 ###app *开发文件*
 
->cache *缓存文件,需要具有读写的权限*
->controllers *控制器*  
+>cache *缓存文件,需要具有读写的权限*  
+  controllers *控制器*  
 
->>esweb *默认前端控制器*
->>>home.php *默认前端控制*
->>common 公共控制器(必须存在)
->>>install.php 框架初始化
-  min.php 合并css,js
+>>esweb *默认前端控制器*  
+>>>home.php *默认前端控制*  
+>>common *公共控制器(必须存在)*  
+>>>install.php *框架初始化*  
+  min.php *合并css,js*  
 	
->core *核心基类*
->errors *异常页面*
->>404.php
-500.php
+>core *核心基类*  
+  errors *异常页面*  
+>>404.php  
+  500.php  
 
 >helpers *辅助函数库*  
   libraries *类库*  
@@ -51,19 +51,19 @@
 >>>>home *与控制器名一致的视图文件夹* 
 >>>>>index.php *与控制器方法名一致的文件*
 
->>haml moreaboutviewruby
+>>haml *moreaboutviewruby*
 
 ### configs *配置文件*
->config.eno *基本设置*
->constants.eno *全局常量*
->database.eno *数据库设置*
->routes.eno *路由设置*
+  config.eno *基本设置*  
+  constants.eno *全局常量*  
+  database.eno *数据库设置*  
+  routes.eno *路由设置*  
 
 ### es *框架文件*
->core *核心文件*
->libraries *核心类库*
->helpers *核心辅助函数*
->database *数据库*
+>core *核心文件*  
+  libraries *核心类库*  
+  helpers *核心辅助函数*  
+  database *数据库*  
 
 ###logs *日志 需要具有读写权限*
 >def *默认日志文件夹*
