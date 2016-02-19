@@ -54,7 +54,7 @@
 >>haml *moreaboutviewruby*
 
 ### configs *配置文件*
-  config.eno *基本设置*  
+>config.eno *基本设置*  
   constants.eno *全局常量*  
   database.eno *数据库设置*  
   routes.eno *路由设置*  
