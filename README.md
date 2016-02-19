@@ -1,9 +1,9 @@
-# ES框架 
+# ES2.1框架 
 @author Joe
 
 ## 前提
 
- 1. ≽ PHP5.5 如果不会用到事务，则PHP5以上的环境即可运行。
+ 1. 版本要求PHP5.2.x。
  2. 服务器必须开启rewrite支持。
  3. 保证`./uploads`、`./logs`、`./application/cache`、`./application/data`具有读写权限。
 
@@ -95,7 +95,7 @@
   css,js的命名规则为控制器名.控制器方法名.css|js,如，当前控制器名为home和当前控制器方法名为index,则css|js的命名为home.index.css|js    
 
   css,js的引用有两种方式，均在控制器内设置  
-  1. 控制器类属性`public $css = 'base,dom';`或者`public $js = 'base.jquery.min';`
+  1. 控制器类属性`public $css = 'base,dom';`或者`public $js = 'base,jquery.min';`
   2. 控制器在调用`protected function view($data=array(),...){}`中传入的`$data`中设置`$data['css']`
   css,js默认通过控制器`min`(`./application/controllers/common/min.php`)调用。  
   3. 设置时，只需要填入css|js的在默认存放文件夹中的名字，如`./theme/default_theme_path/home.index.css`,只需要填入`public $css = 'home.index';`或者`$data['css'] = 'home.index'`,多个引用，用半角逗号隔开，如`public $css = 'base,home.index'`，当然默认控制器的`view()`方法能够自动引用与控制器名和控制器方法名相同的css|js    
@@ -103,7 +103,7 @@
   如果引用的css,js是一个外部链接，如`http://cdn.com/style.css`,则应该这样填写,`public $css = '//cdn.com/style,base,home.index'`,系统会自动获取，但不会产生文件的合并，即最终将生成以下HTML：  
 
     `<link rel="stylesheet" href="//cdn.com/style.css">`  
-    `<link rel="stylesheet" href="base,home.index">`  
+    `<link rel="stylesheet" href="base,home.index.css">`  
 
 ## 关于图片的引用
   使用相对路径进行引用，如`./uploads/build/whoami.png`,如果引用则`<img src="/uploads/build/whoami.png" alt="" />`
