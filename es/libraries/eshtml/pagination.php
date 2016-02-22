@@ -58,7 +58,7 @@ class Pagination{
             $pagenum[] = $i;
           }
           $pagenum[] = $this->total;
-        }elseif($this->page == $this->total-1){// 当前页处于最后一页附近
+        }elseif($this->page == $this->total){// 当前页处于最后一页附近
           $pagenum[] = 0;
           for($i=$this->total-3;$i<$this->total;$i++){
             $pagenum[] = $i;
@@ -66,9 +66,9 @@ class Pagination{
         }else{// 当前页在页码中间
           $pagenum[] = 0;
           for($i=$this->page-1;$i<$this->page+2;$i++){
-            if($i<$this->total) $pagenum[] = $i;
+            if($i<=$this->total) $pagenum[] = $i;
           }
-          if($pagenum[count($pagenum)-1]+1<=$this->total){
+          if($pagenum[count($pagenum)-1]<$this->total){
             $pagenum[] = $this->total;
           }
         }
