@@ -3,6 +3,9 @@ namespace es\libraries\eshtml;
 /**
  * 分页的接口专用
  * 2015年8月18日14:06:36
+ * --------------------
+ * 2016年2月22日11:27:36
+ * 修正$per与$total正好成整倍数关系时的页码错误
  */
 class Pagination{
   private $total;     // 共多少页
@@ -37,10 +40,11 @@ class Pagination{
     $pagenum = array();
     if($this->page == 0){// 当前第一页
       if($this->total <= 2){
-        for($i=0;$i<$this->total;$i++){
+        for($i=0;$i<=$this->total;$i++){
           $pagenum[] = $i;
         }
       }
+      
     }elseif($this->total == $this->page){// 最后一页
       if($this->total>=2){
         for($i=2;$i>=0;$i--){
@@ -73,7 +77,7 @@ class Pagination{
     if(empty($pagenum)){
       
       $n = $this->total>4?4:$this->total; 
-      for($i=0;$i<$n;$i++){
+      for($i=0;$i<=$n;$i++){
         $pagenum[] = $i;
       }
     }
