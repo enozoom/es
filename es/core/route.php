@@ -32,6 +32,8 @@ namespace es\core;
 * | 对configs/routes.eno进行全字符串匹配
 * 2016年2月19日12:21:52
 * | 自动为无后缀控制器方法访问末尾加'/'
+* 2016年2月23日17:54:11
+* | 对自动末尾加'/'时判断是否为get请求
 * -----------------------------------------
 *
 */
@@ -251,7 +253,7 @@ class Route{
     $uri = $_SERVER['REQUEST_URI'];
     isset($_SERVER['HTTP_X_ORIGINAL_URL']) && $uri = $_SERVER['HTTP_X_ORIGINAL_URL'];
     
-    if(!strrchr($uri, '.') && substr($uri,-1)!='/' ){// 无后缀
+    if($_SERVER['REQUEST_METHOD'] == 'GET' && !strrchr($uri, '.') && substr($uri,-1)!='/' ){// 无后缀
       redirect_url( base_url($uri.'/') );
     }
     
