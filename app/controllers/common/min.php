@@ -31,6 +31,9 @@ namespace app\controllers\common;
 * ---------------------
 * 2016年1月16日14:16:33
 * ·区分出管理后台的css，js文件夹，不再放置在./theme下
+* ---------------------
+* 2016年2月23日13:59:54
+* ·再次区分非前台的css,js
 */
 class min extends \es\core\Controller{
   private $cache = FALSE;
@@ -43,10 +46,11 @@ class min extends \es\core\Controller{
     parent::__construct();
     $this->cache_dir = APPPATH.'cache/cssjsless/';
     $this->def_dir = './theme/'.$this->_configs('theme_path').'/';
-    // 管理后台的css,js放置地址
-    if( strpos($this->_cmdq()['q'], 'esadmin-')!==FALSE ){
-      $this->is_admin = TRUE;
-      $this->def_dir = APPPATH.'data/esadmin/';
+    // 非前台地址
+    if(preg_match('/([^-]+)-/',$this->_cmdq()['q'],$matches)){
+      if(is_dir($dir = APPPATH.'data/'.$matches[1])){
+        $this->def_dir = $dir.'/';
+      }
     }
   }
 /**
@@ -55,6 +59,7 @@ class min extends \es\core\Controller{
  */
   public function index($files=''){
     $this->is_admin && $files = str_replace('esadmin-', '', $files);
+    if($i = strpos($files, '-')) $files = substr($files, $i+1);
     $output = $this->cache($files);
     $suffix = substr($files,strrpos($files,'.')+1);// 获取后缀
     empty($output) || $this->compress($output,$suffix);
@@ -126,7 +131,6 @@ class min extends \es\core\Controller{
     
     if(empty($output)){// 从文件中读取
       $files = str_replace(".{$filetype}",'',$files);// 去后缀
-      
       
       foreach(explode(',',$files) as $f){
         $path = $this->def_dir.$filetype."/{$f}.".$filetype;
