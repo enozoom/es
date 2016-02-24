@@ -253,7 +253,10 @@ class Route{
     $uri = $_SERVER['REQUEST_URI'];
     isset($_SERVER['HTTP_X_ORIGINAL_URL']) && $uri = $_SERVER['HTTP_X_ORIGINAL_URL'];
     
-    if($_SERVER['REQUEST_METHOD'] == 'GET' && !strrchr($uri, '.') && substr($uri,-1)!='/' ){// 无后缀
+    if($_SERVER['REQUEST_METHOD'] == 'GET' // 过滤POST提交的重定向
+       && strpos($uri,'?') == FALSE        // 过滤GET有?a=b形式的参数时的重定向
+       && !strrchr($uri, '.')              // 过滤有页面后缀如.php的重定向
+       && substr($uri,-1)!='/' ){          // 过滤末尾已有/的网址
       redirect_url( base_url($uri.'/') );
     }
     
