@@ -71,16 +71,16 @@ $model = <<<PHP
 <?php namespace app\models;
 /**
  * 数据模型
- * @author ES%f 
+ * @author %s 
  * %s
  */
 class %s extends \\es\core\Model{
   protected \$tableName = '{$this->tableName}';
   protected \$primaryKey = '{$this->primaryKey}';  
   public function _attributes(\$attr=''){
-    \$atts = array(
+    \$atts = [
 %s
-    );
+            ];
     return empty(\$attr)?\$atts:(isset(\$atts[\$attr])?\$atts[\$attr]:FALSE);
   }
 }
@@ -89,7 +89,7 @@ PHP;
 $attrs = '';
 foreach( $fields as $field )
 $attrs .= <<<PHP
-                  {$field} => '{$field}',
+              '{$field}' => '{$field}',
 
 PHP;
 
