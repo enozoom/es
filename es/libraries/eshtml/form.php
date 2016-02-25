@@ -109,7 +109,6 @@ class Form{
     $value = empty($this->instance)?'':$this->instance->$name;
     strpos($name,'time')!==FALSE && empty($value) && $value = \es\core\get_format_time();
     empty($attr['class']) && $attr['class'] = 'form-control';
-    
     return sprintf($input_with_label,$name,$label,$this->_attr($attr),$name,$name,$label,$value);
   }
   
@@ -137,7 +136,7 @@ class Form{
     $select = '';
     if(method_exists($this->model, $method)){
       $options = '';
-      $select_with_label = '<label>%s</label><select class="form-control" name="%s" %s>%s</select>';
+      $select_with_label = '<label>%s</label><div><select class="form-control" %s>%s</select><input name="%s" type="hidden"></div>';
       $label = $this->model->_attributes($name);
       $value = empty($this->instance)?'':$this->instance->$name;
       foreach($this->model->$method() as $option){
@@ -146,7 +145,7 @@ class Form{
         $_option = sprintf($_option,$option->category_id,$selected,$option->category_name);
         $options .= $_option;
       }
-      $select = sprintf($select_with_label,$label,$name,$this->_attr($attr),$options);
+      $select = sprintf($select_with_label,$label,$this->_attr($attr),$options,$name);
     }
     return $select;
   }
@@ -156,10 +155,12 @@ class Form{
 * @param array $attr 标签忽略name,placeholder,help属性
 * @return string
 */
-  private function _attr($attr=[]){
+  private function _attr($attr=[],$filter=['name','help','placeholder']){
     if(empty($attr)) return '';
     is_array($attr) || die('参数必须为数组');
     $str = '';
+    
+    
     foreach($attr as $k=>$v){
       if($k==='format'){
         $k = 'pattern';
@@ -176,10 +177,9 @@ class Form{
             $v = '[a_zA_Z]*';
           break;
         }
-        break;
       }
-      in_array( $k,array('name','help','placeholder') ,true) ||
-      $str .= is_numeric($k)?" {$v}":" {$k}=\"{$v}\"";
+      
+      in_array( $k,$filter ,true) || $str .= is_numeric($k)?" {$v}":" {$k}=\"{$v}\"";
     }
   
     return $str;
@@ -192,8 +192,10 @@ class Form{
   /**
    * 插入表单中的HTML片段
    */
-  public function html_segment($htmlstr=''){
-  
+  public function html_segment($htmlstr='',$formgroup=TRUE){
+    $seg ='<div class="form-group segment">%s</div>';
+    $this->form .= $formgroup?sprintf($seg,$htmlstr):$htmlstr;
+    return $this;
   }
   public function input($name,$attr=[]){
     $this->element('input',$name,$attr);
