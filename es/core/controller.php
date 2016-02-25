@@ -42,6 +42,21 @@ class Controller{
   protected function _is_post(){
     return strtolower($_SERVER['REQUEST_METHOD']) == 'post';
   }
+  
+  /**
+   * 检查数据数组中必须包含的值
+   * @param array $requires 必须的值的键数组
+   * @param array $data     要查询数组
+   * @return bool 全部有值则为true
+   */
+  protected function _is_require($requires=[],$data=[]){
+    empty($data) && $data = $_GET;
+    foreach($requires as $k){
+      if(empty($data[$k])) return FALSE;
+    }
+    return TRUE;
+  }
+  
   /**
    * 默认方法
    */
