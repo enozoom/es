@@ -56,7 +56,7 @@ class Datagrid{
           $_row =  '<span class="'.($attr.'_'.$row->$attr).'">'.$this->model->$model_method($row->$attr).'</span>';
           is_array($_row) && $_row = '无';
         }else{
-          $_row =  $row->$attr;
+          $_row = empty($row->$attr)?'':$row->$attr;
           stripos($attr,'time') !== FALSE && $_row = \es\core\get_format_time($_row);
         }
         
