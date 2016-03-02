@@ -1,0 +1,15 @@
+body{animation:clr 30s infinite;-webkit-animation:clr 30s infinite;}
+@keyframes clr{0%,100%{background-color:#3498db; }13%,87%{ background-color:#9b59b6; }25%,75%{ background-color:#1abc9c；}50%{ background-color:#2ecc71}}
+@-webkit-keyframes clr{0%,100%{ background-color:#3498db; }13%,87%{ background-color:#9b59b6; }25%,75%{ background-color:#1abc9c；}50%{ background-color:#2ecc71}}
+.step{width:350px;text-align:right;position:absolute;left:50%;margin-left:-175px;top:50%;
+transition:all .5s ease .3s;-webkit-transition:all .5s ease .3s;}
+.step p{font:600 18px/1 '微软雅黑';margin-bottom:10px;color:#fff;}
+.iform input{display:block;margin-bottom:10px;box-sizing:border-box;-webkit-boxsizing:border-box;width:350px;height:34px;padding:3px 5px;border:1px solid #ccc;font:14px/1 '微软雅黑'}
+.iform button{border:none;color:#fff;padding:3px 5px;cursor:pointer;background-color:#aaa;}
+.iform button:last-child{background-color:#FF5722;}
+.step p small{font-weight:300;color:#ccc;font-size:14px;}
+#mask{position:absolute;z-index:9;background-color:rgba(0,0,0,.3);width:100%;top:0;left:0;bottom:0;right:0;}
+#dialog{width:270px;background-color:#fff;position:absolute;left:50%;margin-left:-150px;z-index:10;top:40%;padding:15px;border-radius:5px;box-shadow:0 0 5px rgba(0,0,0,.6)}
+#dialog p{font-size:16px;color:#c00;line-height:22px;}
+#dialog small{cursor:pointer;color:#ccc;display:block;text-align:right;}
+#dialog small:hover{color:#555;}
