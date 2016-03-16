@@ -13,8 +13,8 @@ class Html_controller extends \es\core\Controller{
   public $title;
   public $keywords;
   public $description;
-  public $css = '';
-  public $js = '';
+  public $css;
+  public $js;
   
   public function __construct(){
     parent::__construct();
@@ -66,17 +66,25 @@ class Html_controller extends \es\core\Controller{
     // 载入基本数据
     $this->_data($data);
     
-    
-    if($hf){
-      $header = $dir.'/layout/header';
-      file_exists(APPPATH.'views/html/'.$header.'.php') && $this->load->view($header,$data);
-    }
-  
+    $hf && $this->_load_header_footer($dir,$data);
     $this->load->view($file,$data);
+    $hf && $this->_load_header_footer($dir,$data,'footer');
+  }
   
-    if($hf){
-      $footer = $dir.'/layout/footer';
-      file_exists(APPPATH.'views/html/'.$footer.'.php') && $this->load->view($footer,$data);
+/**
+ * 载入头尾页面
+ * @param string $dir          头尾页面所在的文件夹
+ * @param array $data          需要放置在页面的变量
+ * @param string $layout_name  头尾名称
+ */
+  private function _load_header_footer($dir,$data,$layout_name='header'){
+    $route = $this->_cmdq();
+    foreach( [$route['c'].'/',''] as $seg ){
+      $hf = "{$dir}/{$seg}layout/{$layout_name}";
+      if( file_exists(APPPATH.'views/html/'.$hf.'.php') ){
+        $this->load->view($hf,$data);
+        break;
+      }
     }
-  }  
+  }
 }

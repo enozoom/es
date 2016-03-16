@@ -138,7 +138,7 @@ class Form{
       $options = '';
       $select_with_label = '<label>%s</label><div><select class="form-control" %s>%s</select><input name="%s" type="hidden"></div>';
       $label = $this->model->_attributes($name);
-      $value = empty($this->instance)?'':$this->instance->$name;
+      $value = empty($this->instance)?(empty($attr['value'])?'':$attr['value']):$this->instance->$name;
       foreach($this->model->$method() as $option){
         $_option = '<option value="%s"%s>%s</option>';
         $selected = $option->category_id == $value ?' selected' :'';
@@ -212,6 +212,13 @@ class Form{
   public function file($name,$attr=[]){
     $this->element('file',$name, $attr);
     return $this;
+  }
+  
+  public function pugin_params($fktable){
+    $htm = '<label><i class="fa fa-plug clr-orange"></i>增加关联参数</label>'.
+           '<div><button type="button" class="btn btn-default" id="btn-add-params" data-fktable="'.$fktable.'"><i class="fa fa-plus"></i>增加</button></div>'.
+           '<p class="help-block">增加用户关联字段，添加关联后，新增时均会显示关联字段项，填写即可关联，不填写不进行关联。</p>';
+    return $this->html_segment($htm,TRUE);
   }
 //---------------------------------------------------------|
 }
