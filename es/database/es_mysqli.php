@@ -367,7 +367,7 @@ class ES_Mysqli{
   }
   
   public function _escape($str=''){
-    return empty($str)?'':$this->mysqli->real_escape_string($str);
+    return empty($str)?$str:$this->mysqli->real_escape_string($str);
   }
 
 /**
