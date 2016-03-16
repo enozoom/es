@@ -7,12 +7,14 @@
   $('.step button.next').click(function(){
     var data = $(this).parents('form').serialize();
     var $step = $(this).parents('.step');
+    var $btn = $(this).attr('disabled',true);
     $.post('/common/install/ajax/'+($step.index()+1),data,function(r){
       if(r.err/1){
         $('#dialog p').html(r.msg).parents('#mask').show();
       }else{
         $step.addClass('d_h').next().removeClass('d_h');
       }
+      $btn.removeAttr('disabled');
     },'json');
   });
   $('.step button.prev').click(function(){

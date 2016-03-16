@@ -13,7 +13,7 @@
 "suffix":"es",
 
 # 默认css,js,less的存放文件路径，不含./theme
-"theme_path":"esweb/2015",
+"theme_path":"esweb/2016",
 
 # 默认的当前url，如http://www.enozoom.com/
 "base_url":"",

@@ -10,7 +10,9 @@
 {"pattern":"min\/(.+\\.(?:cs|j|les)s)","cmdq":"d=common&c=min&m=index&q=$1"},
 
 # 生成model
-{"pattern":"install\/([^\/]+)","cmdq":"d=common&c=install&m=$1"},
+# 生成表结构和填写基本数据
+{"pattern":"install","cmdq":"d=common&c=install&m=index"},
+{"pattern":"install\/model","cmdq":"d=common&c=install&m=model"},
 
 # 隐藏esweb
 {"pattern":"home\/([^\/]+)","cmdq":"d=esweb&c=home&m=$1"},

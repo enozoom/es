@@ -68,9 +68,9 @@ class Datagrid{
         extract( $Route->cmdq );
         $pkid_field = $this->model->primaryKey;
         $td_opr= '<td class="datagrid_opr_btn t_right">%s</td>';
-        $editor = sprintf('<a href="#" data-href="/%s/%s/index/%d"><i class="fa fa-edit"></i> 编辑</a>',$d,$c,$row->$pkid_field);
-        $delete = sprintf('<a href="#" data-href="/%s/%s/del/%d"><i class="fa fa-times-circle"></i> 删除</a>',$d,$c,$row->$pkid_field);
-        $clean =  sprintf('<a href="#" data-href="/%s/%s/clean/%d"><i class="fa fa-refresh"></i> 清缓</a>',$d,$c,$row->$pkid_field);
+        $editor = sprintf('<a href="#" data-href="/%s/%s/index/%d/"><i class="fa fa-edit"></i> 编辑</a>',$d,$c,$row->$pkid_field);
+        $delete = sprintf('<a class="dob_btn" href="#" data-href="/%s/%s/del/%d/"><i class="fa fa-times-circle"></i> 删除</a>',$d,$c,$row->$pkid_field);
+        $clean =  sprintf('<a class="dob_btn" href="#" data-href="/%s/%s/clean/%d/"><i class="fa fa-refresh"></i> 清缓</a>',$d,$c,$row->$pkid_field);
         $htm .= sprintf($td_opr,$clean.$editor.$delete);
       }
       

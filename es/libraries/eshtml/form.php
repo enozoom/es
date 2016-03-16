@@ -96,6 +96,8 @@ class Form{
         $segment = $this->element_textarea($name, $attr);
       break;case 'select':
         $segment = $this->element_select($name, $attr);
+      break;case 'select_nojs':
+        $segment = $this->element_select_nojs($name,$attr);
       break;
     }
     $group = sprintf($group,$require?' has-success':'',$segment.$input_help);
@@ -131,12 +133,18 @@ class Form{
     
     
   }
+  
+/**
+ * 生成select,将配合JS使用
+ * @param string $name
+ * @param array $attr  当含有noseljs值时，不自动调用JS
+ */
   private function element_select($name,$attr){
     $method = '__'.$name.'s';
     $select = '';
     if(method_exists($this->model, $method)){
       $options = '';
-      $select_with_label = '<label>%s</label><div><select class="form-control" %s>%s</select><input name="%s" type="hidden"></div>';
+      $select_with_label = '<label>%s</label><div class="select-js"><select class="form-control" %s>%s</select><input name="%s" type="hidden"></div>';
       $label = $this->model->_attributes($name);
       $value = empty($this->instance)?(empty($attr['value'])?'':$attr['value']):$this->instance->$name;
       foreach($this->model->$method() as $option){
@@ -150,12 +158,35 @@ class Form{
     return $select;
   }
   
+  
+  private function element_select_nojs($name,$attr=[]){
+    $method = '__'.$name.'s';
+    $select = '';
+    if(method_exists($this->model, $method)){
+      $options = '';
+      $select_with_label = '<label>%s</label><div><select name="%s" class="form-control" %s>%s</select></div>';
+      $label = $this->model->_attributes($name);
+      $value = empty($this->instance)?(empty($attr['value'])?'':$attr['value']):$this->instance->$name;
+      foreach($this->model->$method() as $option){
+        $_option = '<option value="%s"%s>%s</option>';
+        $selected = $option->category_id == $value ?' selected' :'';
+        $_option = sprintf($_option,$option->category_id,$selected,$option->category_name);
+        $options .= $_option;
+      }
+      $select = sprintf($select_with_label,$label,$name,$this->_attr($attr),$options);
+    }
+    
+    return $select;
+  }
+  
+  
+  
 /**
 * 标签属性
 * @param array $attr 标签忽略name,placeholder,help属性
 * @return string
 */
-  private function _attr($attr=[],$filter=['name','help','placeholder']){
+  private function _attr($attr=[],$filter=['name','help','placeholder','noseljs']){
     if(empty($attr)) return '';
     is_array($attr) || die('参数必须为数组');
     $str = '';
@@ -209,6 +240,12 @@ class Form{
     $this->element('select',$name,$attr);
     return $this;
   }
+  
+  public function select_noinput($name,$attr=[]){
+    $this->element('select_nojs',$name,$attr);
+    return $this;
+  }
+  
   public function file($name,$attr=[]){
     $this->element('file',$name, $attr);
     return $this;

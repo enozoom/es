@@ -25,20 +25,13 @@ class Install extends \es\core\Controller{
   public function ajax($step=0){
     $r = ['err'=>1,'msg'=>'请求错误！'];
     $debug = 0;
-    /*
-    $_POST = ['dbhost'=>'localhost',
-             'dbpfix'=>'es_',
-             'dbport'=>'3306',
-             'dbpwrd'=>'','dbname'=>'demo',
-             'dbuser'=>'root'];
-    */
     
     if( $debug || (!empty($step) && $this->_is_post()) ){
       try {
         extract($_POST);
         switch ($step){
           case 1:// 配置数据库文件
-            if(in_array('', [$dbhost,$dbport,$dbuser,$dbname])){//dbpwrd//dbpfix
+            if(in_array('', [$dbhost,$dbport,$dbuser,$dbname])){
               $r['msg'] = '数据库地址,数据库端口,数据库用户,数据库名称均不能为空。';
             }else{
               // 数据库连接
@@ -47,7 +40,7 @@ class Install extends \es\core\Controller{
                 $r['msg'] = "数据库连接失败 {$dbuser}@{$dbhost}:{$dbport}。";
               }else{
                 if(!$mysqli->select_db($dbname)){
-                  $r['msg'] = "数据库{$dbname}不存在！";
+                  $r['msg'] = "数据库{$dbname}不存在，请先创建后配置！";
                 }else{
                   //写入配置文件
                   $w1 = $this->init_databse_eno($dbhost,$dbuser,$dbpwrd,$dbname,$dbport,$dbpfix);

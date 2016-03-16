@@ -1,1 +1,1 @@
-<div>Hi,ES3.0</div>
+<div><a href="/install/">Hi,ES3.0</a></div>
