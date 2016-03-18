@@ -47,6 +47,10 @@ if(!function_exists('generate_html5_head')){
       $html5 .= '<meta content="yes" name="apple-mobile-web-app-capable">';
       $html5 .= '<meta content="black" name="apple-mobile-web-app-status-bar-style">';
       $html5 .= '<meta content="telephone=no" name="format-detection">';
+    }else{
+      //增加对IE9一下的浏览器HTML5标签支持
+      $html5 .= head_script('//cdn.fcmayi.com/lt.ie.9/html5shiv/3.7.3/html5shiv.min','lt IE 9',1);
+      $html5 .= head_script('//cdn.fcmayi.com/lt.ie.9/selectivizr/1.0.2/selectivizr-min','lt IE 9',1);
     }
     if($noindex){
       $html5 .= '<meta name="robots" content="noindex,nofollow" />';
@@ -54,9 +58,7 @@ if(!function_exists('generate_html5_head')){
     $keywords && $html5 .= "<meta name=\"keywords\" content=\"$keywords\" />";
     $description && $html5 .= "<meta name=\"description\" content=\"$description\" />";
     $html5 .= head_link('//cdn.fcmayi.com/reset/base.min.2015.1123',0,1);
-        //增加对IE9一下的浏览器HTML5标签支持
-        $html5 .= head_script('//cdn.fcmayi.com/lt.ie.9/html5shiv/3.7.3/html5shiv.min','lt IE 9',1);
-        $html5 .= head_script('//cdn.fcmayi.com/lt.ie.9/selectivizr/1.0.2/selectivizr-min','lt IE 9',1);
+        
     empty($css) || $html5 .= resolve_http($css);
     
     return $html5.'</head><body>';
