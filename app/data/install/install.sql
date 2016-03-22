@@ -1,6 +1,3 @@
-# 使用数据库
-USE brsys;
-
 # A文章
 DROP TABLE IF EXISTS `es_article`;
 CREATE TABLE `es_article` (
