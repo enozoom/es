@@ -216,7 +216,7 @@ if(!function_exists('resolve_http')){
     $html = '';
     // 含http的外部链接，如http://cdn.fcmayi.com
     preg_match_all('@,?http[^,]+,?@',$files,$matchs);
-    $method = 'head_'.($type == 'css'?'link':'script');
+    $method = '\\es\\helpers\\head_'.($type == 'css'?'link':'script');
     foreach($matchs[0] as $match){
       $files = str_replace($match,',',$files);
       $foreign = str_replace(',', '', $match);
