@@ -63,6 +63,8 @@ class Cache{
     // 可以被缓存的文件
     empty($configs->config->cache_allow) ||
     $this->cache_controller_method = json_decode(json_encode($configs->config->cache_allow),1);
+    // 加入城市站
+    $this->cache_path .= '/'.$configs->database->dbname;
     // 是否压缩输出
     $this->compress = $configs->config->compress_outpage;
     $this->cmdq = $cmdq;
@@ -77,7 +79,7 @@ class Cache{
     if($this->is_allow_cache() && mb_strlen($html,'UTF-8')>1024){
       $file = $this->cache_file_path();
       $html = clean_htmlblank($html);
-      $es = PHP_EOL."<!--[[".ENO_POWER.' '.ENO_AUTHOR.' '.
+      $es = PHP_EOL."<!--[[".ES_POWER.' '.ES_AUTHOR.' '.
                    get_format_time().' '.
                    $this->cache_file_rule().
                    time()."]]-->";// 该值用以判断是否过期
@@ -95,7 +97,7 @@ class Cache{
         $html = file_get_contents($file);
         $time = str_replace(']]-->','',mb_substr($html,-15,NULL,'UTF-8'));
         is_numeric($time) || show_500('缓存文件格式不正确，无法正确读取');
-        if( time() - $time > $this->expires ){
+        if( time() - $time < $this->expires ){
           $this->compress && extension_loaded('zlib') && ob_start('ob_gzhandler');
           echo $html;
           $this->compress && extension_loaded('zlib') && ob_end_flush();
