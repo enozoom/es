@@ -110,7 +110,7 @@ class Crypt{
     $encrypted = '';
     $key = self::key($encodingAesKey);
     try {
-     $random = random_string('alnum',16);
+     $random = \es\core\random_string('alnum',16);
      $text = $random . pack("N", strlen($text)) . $text . $appid;
      // 网络字节序
      $size = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);

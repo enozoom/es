@@ -15,10 +15,13 @@ class Reply{
  * @return string XML
  */
   public static function text($to,$from,$content,$agentid=0){
-    $data = array('ToUserName'=>$to,    'FromUserName'=>$from,
-                  'CreateTime'=>time(),      'MsgType'=>'text',
-                     'Content'=>$content);
+    $data = [ 'ToUserName'=>$to,
+              'FromUserName'=>$from,
+              'CreateTime'=>time(),
+              'MsgType'=>'text',
+              'Content'=>$content ];
     empty($agentid) || $data['AgentID'] = $agentid;
+    //\es\core\log_msg($data);
     return Arr2xml::toXml($data);
   }
   
@@ -52,7 +55,7 @@ class Reply{
   }
   
   public static function crypt_xml($encrypt, $signature, $timestamp, $nonce){
-    $data = array('Encrypt'=>$encrypt,'MsgSignature'=>$signature,'TimeStamp'=>$timestamp,'Nonce'=>$nonce);
+    $data = ['Encrypt'=>$encrypt,'MsgSignature'=>$signature,'TimeStamp'=>$timestamp,'Nonce'=>$nonce];
     return Arr2xml::toXml($data);
   }
 }

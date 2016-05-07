@@ -1,11 +1,18 @@
 <?php 
 namespace es\libraries\api_wechat;
-
+/**
+ * 微信调试框架
+ * 支持PHP5.5，微信服务器未发起兼容的$HTTP_RAW_POST_DATA
+ * @author Joe e@enozoom.com
+ * Powered by Enozoomstudio
+ * 2016年4月20日上午9:51:13
+ */
 require 'helper_arr2xml.php';   // 数组转xml
 require 'helper_reply.php';     // 微信回复消息
 require 'helper_crypt.php';     // 微信消息加解密
-require 'helper_material.php';  // 微信消息加解密
+require 'helper_material.php';  // 微信素材
 require 'helper_wjs.php';       // 网页js交互获取分享，用户等信息
+require 'helper_qr.php';        // 二维码
 
 /**
  * 微信公众号基本类
@@ -55,7 +62,7 @@ class Api_wechat{
  */
   public function _init($appid,$appSecret,$encodingAesKey,$token=''){
     if( empty($appid) || empty($appSecret) || empty($encodingAesKey) ){
-      show_500('必须保证$appid,$appSecret,$encodingAesKey有值且正确');
+      \es\core\show_500('必须保证$appid,$appSecret,$encodingAesKey有值且正确');
     }
     
     $this->appid = $appid;
@@ -86,7 +93,6 @@ class Api_wechat{
     if($get){
       $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s';
       $json = json_decode(\es\core\curl_file_get_contents(sprintf($url,$this->appid,$this->appSecret)));
-      var_dump($this->appid,$this->appSecret);
       if(!empty($json->errcode)){ // 获取失败直接停止
         \es\core\log_msg($json,'获取公共access_token失败');
         die('get access_token fail!' );
@@ -151,7 +157,16 @@ class Api_wechat{
     return WJS::user_openid($code, $this->appid, $this->appSecret);
   }
   
-  
+  /**
+   * 根据微信跳转而来的带有code参数的链接
+   * 获取openid，然后使用openid获取当前用的信息
+   * @param string $code
+   * @return object
+   */
+  public function user_info($code){
+    $openid = $this->user_openid($code);
+    return WJS::usr_info_by_openid($openid,$this->access_token);
+  }
   
 /**
  * 生成底部菜单
@@ -181,6 +196,18 @@ class Api_wechat{
 //--------------------------------------------------------------------------------------
 // 微信的常用方法
 //--------------------------------------------------------------------------------------
+
+/**
+ * 生成二维码
+ * @param mix $scene int|string 场景ID，如果传入string则生成scene_str，int则生成scene_id
+ */
+  public function qr($scene){
+    return Qr::ticket($this->access_token,$scene);
+  }
+  
+  
+  
+  
 
 /**
  * 微信分享时的必要数据
@@ -230,7 +257,7 @@ class Api_wechat{
   
   public function set_sha1_sign($encrypt,&$timestamp, &$nonce){
     $timestamp = time();
-    $nonce = random_string('numeric');
+    $nonce = \es\core\random_string('numeric');
     return $this->sha1_sign($encrypt, $timestamp, $nonce);
   }
 }

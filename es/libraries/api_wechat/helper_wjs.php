@@ -35,7 +35,7 @@ class WJS{
     $json = json_decode(\es\core\curl_file_get_contents(sprintf($url,$access_token)));
     if( $json->errcode ){
       \es\core\log_msg($json,'获取jsapi_ticket失败');
-      die('get jsapi_ticket fail!' );
+      die( 'get jsapi_ticket fail!' );
     }else{
       $ticket = array('expires'=>time()+$json->expires_in,'ticket'=>$json->ticket);
       file_put_contents($path, json_encode($ticket) );
@@ -56,6 +56,7 @@ class WJS{
   public static function jsapi_sign($access_token,$noncestr,$timestamp,$url=''){
     $jsapi_ticket = self::jsapi_ticket($access_token);
     empty($url) && $url = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+    //\es\core\log_msg($url);
     
     $args = array( 'noncestr'=>$noncestr,'jsapi_ticket'=>$jsapi_ticket,
                   'timestamp'=>$timestamp,'url'=>$url );
@@ -80,12 +81,44 @@ class WJS{
   public static function user_openid($code,$appid,$appsecret){
     $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
     $url = sprintf($url,$appid,$appsecret,$code);
-    $json = json_decode( curl_file_get_contents($url) );
+    $json = json_decode( \es\core\curl_file_get_contents($url) );
     if( !empty($json->errcode) ){
-      log_msg("errcode=$json->errcode\ncode={$code}",'openid获取失败');
+      \es\core\log_msg($json,'openid获取失败');
       return '';
     }
     return $json->openid;
+  }
+  
+/**
+ * 获取当前微信用户的信息
+ * 关注微信号将获得以下信息，未关注则仅获得['subscribe','openid','unionid']信息
+ * "subscribe": 1, 
+ * "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M", 
+ * "nickname": "Band", 
+ * "sex": 1, 
+ * "language": "zh_CN", 
+ * "city": "广州", 
+ * "province": "广东", 
+ * "country": "中国", 
+ * "headimgurl":    "http://wx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0", 
+ * "subscribe_time": 1382694957,
+ * "unionid": " o6_bmasdasdsad6_2sgVt7hMZOPfL"
+ * "remark": "",
+ * "groupid": 0
+ * @param string $openid
+ * @param string $access_token
+ * @return object {subscribe:,openid:,nickname:,sex:,language:,city:,province:,country:,headimgurl:,subscribe_time:,unionid:,remark:,groupid:}
+ */
+  public static function usr_info_by_openid($openid,$access_token){
+    if(empty($openid)) return '';
+    $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN';
+    $url = sprintf($url,$access_token,$openid);
+    $json = json_decode( \es\core\curl_file_get_contents($url) );
+    if( !empty($json->errcode) ){
+      \es\core\log_msg($json,'获取用户信息失败');
+      return '';
+    }
+    return $json;
   }
   
 }
