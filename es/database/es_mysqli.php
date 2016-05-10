@@ -63,6 +63,9 @@ defined('SYSPATH') OR exit('POWERED BY Enozoomstudio');
 * --------------------------
 * 2016年2月17日11:08:49
 * 对_update()进行特殊字符转义
+* --------------------------
+* 2016年5月10日10:42:59
+* _escape()方法，对于int类型空值被转成''的问题。
 */
 class ES_Mysqli{
   protected $host     = '';
@@ -367,7 +370,7 @@ class ES_Mysqli{
   }
   
   public function _escape($str=''){
-    return empty($str)?$str:$this->mysqli->real_escape_string($str);
+    return empty($str)?(is_numeric($str)?0:''):$this->mysqli->real_escape_string($str);
   }
 
 /**
