@@ -205,10 +205,6 @@ class Api_wechat{
     return Qr::ticket($this->access_token,$scene);
   }
   
-  
-  
-  
-
 /**
  * 微信分享时的必要数据
  */

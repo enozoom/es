@@ -10,7 +10,15 @@
 "ES_INTRO":"",
 
 # 微信设置
-"APP_ID":"appid",
-"APP_SECRET":"appsecret",
-"ENCODING_AES_KEY":"encoding_aes_key",
+"APP_ID":"APP_ID",
+"APP_SECRET":"APP_SECRET ",
+"ENCODING_AES_KEY":"ENCODING_AES_KEY",
+# 默认token均为enozoomstudio
+# 微信支付相关
+"WECHAT_PAY_MCHID":"WECHAT_PAY_MCHID",
+"WECHAT_PAY_KEY":"WECHAT_PAY_KEY",
+"WECHAT_PAY_SSLCERT":"./app/data/cert/apiclient_cert.pem",
+"WECHAT_PAY_SSLKEY":"./app/data/cert/apiclient_key.pem",
+# 发送红包的服务器IP
+"WECHAT_PAY_SERVERIP":"1.2.3.4",
 }
