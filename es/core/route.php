@@ -34,6 +34,8 @@ namespace es\core;
 * | 自动为无后缀控制器方法访问末尾加'/'
 * 2016年2月23日17:54:11
 * | 对自动末尾加'/'时判断是否为get请求
+* 2016年5月16日18:00:15
+* | 修正如/min/mobi.estate.css将.es自动过滤的问题
 * -----------------------------------------
 *
 */
@@ -115,7 +117,7 @@ class Route{
     if(!empty($suffix)){
       $mimes[] = $suffix;
       // 去后缀
-      $query = str_replace('.'.$suffix,'',$query);
+      $query = preg_replace('|.'.$suffix.'$|','',$query);
     }
 
     // 如果第一个字符是/，去掉
@@ -213,7 +215,7 @@ class Route{
     try{
       $reflector = new \ReflectionClass(sprintf('\\app\\controllers\\%s\\%s',$this->cmdq['d'],$ctl_cls));
     }catch (\Exception $e){
-      var_dump($e);
+      \es\core\log_msg($e);
       show_500("无法通过反射，获取类{$ctl_cls}！");
     }
         
