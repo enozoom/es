@@ -31,7 +31,8 @@ class Controller{
   public function closeDB(){
     foreach( get_object_vars($this) as $var=>$val ){
       if($val instanceof Model){
-        $this->$var->db->close();    
+        $this->$var->db->close();
+        break;
       }
     }
   }
