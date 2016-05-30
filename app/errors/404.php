@@ -9,15 +9,24 @@
 p{
  margin-top: 100px;text-align: center;font-weight: bold;font:22px 黑体;
 }
-#footer{
-  width:60px;text-align: center;position: absolute;bottom:20px;left:50%;margin-left:-30px;
-  background-color:#0088cc;height:30px;line-height:30px;border-radius: 4px;
+p small{
+ font-size:18px;color:#aaa;font-weight:normal;display:block;
 }
-#footer a{color:#01476a;text-decoration: none;font: 14px arial;text-shadow:0 1px 1px #a4dffd }
-#footer span{
+#footer{
+  width:70px;text-align: center;position: absolute;bottom:20px;left:50%;margin-left:-35px;
+  border:1px solid #0088cc;height:30px;line-height:30px;
+}
+#footer a{color:#0088cc;text-decoration: none;font: 14px arial;}
+#footer span,#footer span:after{
   position: absolute;left:-14px;top:8px;
   border-style: solid;border-width: 7px;
   border-color: transparent #0088cc transparent transparent;
+}
+#footer span:after{
+  border-right-color:#fff;
+  content:" ";
+  left:-6px;
+  top:-7px;
 }
 </style>
 </head>
@@ -25,9 +34,9 @@ p{
 <?php if(!empty($title) && !empty($msg)):?>
 <p>【<?php echo $title?>】<?php echo $msg?></p>
 <?php else:?>
-<p>您访问的页面不存在或已经被删除<br>e@enozoom.com</p>
+<p><small>您访问的页面不存在或已经被删除</small>住在中国 电话:4001840015</p>
 <?php endif?>
 <div></div>
-<div id="footer"><a href="http://www.enozoom.com">&copy;ES</a><span></span></div>
+<div id="footer"><a href="http://www.enozoom.com">&copy;&nbsp;ES3.0</a><span></span></div>
 </body>
 </html>
