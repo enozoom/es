@@ -239,6 +239,9 @@ class Route{
     $rMethod->invokeArgs($cls,$args);
     $cls->closeDB();// 关闭数据库
 
+    global $hook;// 执行钩子
+    $hook->after_cintroller();
+    
     $html = $cls->output->display(1);// 输出
     $cache->save($html);
     

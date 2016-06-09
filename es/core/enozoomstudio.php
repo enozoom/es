@@ -36,13 +36,15 @@ require 'common.php';
 if(!(version_compare(PHP_VERSION, '5.5.0', '>') && version_compare(PHP_VERSION, '7.0.0', '<'))){
   die('Requires PHP version between 5.5.x and 5.6.x, Your version: ' . PHP_VERSION );
 }
-
 // 自动导入类
 spl_autoload_register('ES\CORE\auto_loader');
 // 配置文件
 $configs = Config::init();
-//是否开启调试
+// 是否开启调试
 error_reporting($configs->config->debug?E_ALL:0);
+// 控制器加载前
+$hook = new Hook();
+$hook->before_controller();
 // 核心路由
 $Route = new Route($configs->routes);
 // 开始初始化控制器
