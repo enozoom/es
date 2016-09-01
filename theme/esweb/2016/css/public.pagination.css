@@ -1,0 +1,6 @@
+.pagination{margin-top:15px;}
+.pagination a,.pagination span{display:inline-block;margin-right:3px;
+font-size:18px;padding:0px 7px;}
+.pagination a{background-color:#0088cc;color:#fff;}
+.pagination span{background-color:#ccc;color:#555;}
+.pagination a:hover{background-color:#06a244;}

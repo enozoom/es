@@ -1,0 +1,42 @@
+body{font-family:"Microsoft YaHei";}
+article,blockquote,body,dd,dl,dt,figure,h1,h2,h3,h4,h5,h6,li,ol,p,section,table,td,tr,ul{margin:0;padding:0}ol,ul{list-style:none}
+a,ins{text-decoration:none;color:inherit}
+input,button{font-family:"MicrosoftYaHei"}
+a img{border:none}
+.f-left{float:left}.f-right{float:right}.clear-f{clear:both}.fix-float{zoom:1;overflow:hidden}
+.t-center{text-align:center}.t-left{text-align:left}.t-right{text-align:right}
+.d-h{display:none}.blod{font-weight:700}:focus{outline:0}
+.bsbb{box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;}
+.nowrap{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.block{display:block;}.light{font-weight:100;}
+button,.btn{border:none;display:inline-block;box-sizing:border-box;cursor:pointer;
+;border-radius:3px;font-size:14px;height:40px;line-height:40px;;padding:0px 20px;}
+button i,.btn i{margin-right:3px;}
+.btn-blue{background-color:#1d6ead;color:#fff;}
+.btn-gray{background-color:#ddd;color:#777;}
+.btn-green{background-color:#1dad4c;color:#fff;}
+.btn-red{background-color:#e70505;color:#fff;}
+.btn-orange{background-color:#ff7800;color:#fff;}
+.btn-hui{border:1px solid #ededed;color:#666;background-color:#f9f9f9;}
+.btn-blue-outline,button.btn-gray-outline,.btn-green-outline,
+.btn-red-outline,.btn-orange-outline{
+  border-style:solid;background-color:transparent;border-width:1px;}
+.btn-blue-outline{border-color:#1d6ead;color:#1d6ead;}
+.btn-gray-outline{border-color:#ddd;color:#ddd;}
+.btn-green-outline{border-color:#1dad4c;color:#1dad4c;}
+.btn-red-outline{border-color:#e70505;color:#e70505;}
+.btn-orange-outline{border-color:#ff7800;color:#ff7800;}
+.btn-small{height:30px;line-height:30px;padding:0px 10px;}
+.btn-smallx2{height:22px;line-height:22px;padding:0px 7px;font-size:12px;border-radius:2px;}
+.btn-blue-outline.btn-small{line-height:28px;}
+.btn-gray-outline.btn-small{line-height:28px;}
+.btn-green-outline.btn-small{line-height:28px;}
+.btn-red-outline.btn-small{line-height:28px;}
+.btn-orange-outline.btn-small{line-height:28px;}
+.btn-blue-outline.btn-smallx2{line-height:20px;}
+.btn-gray-outline.btn-smallx2{line-height:20px;}
+.btn-green-outline.btn-smallx2{line-height:20px;}
+.btn-red-outline.btn-smallx2{line-height:20px;}
+.btn-orange-outline.btn-smallx2{line-height:20px;}
+.es-row{display:table;width:100%;}
+.es-col{display:table-cell;vertical-align:middle;}

@@ -1,0 +1,11 @@
+table.es-datagrid,.eno-datagrid{width:100%;box-sizing:border-box;border-collapse:collapse;}
+table.es-datagrid th,table.es-datagrid td,.eno-datagrid th,.eno-datagrid td{padding:10px;color:#555;}
+table.es-datagrid thead tr{border-bottom:2px solid #ccc;text-align:left;}
+table.es-datagrid tbody tr:nth-child(2n){background-color:#fcfcfc;}
+table.es-datagrid tbody tr{border-bottom:1px solid #eee;}
+table.es-datagrid tbody tr:hover{background-color:#feffe8;}
+
+.eno-datagrid th:not(.t-right){text-align:left;}
+.eno-datagrid thead tr{border-bottom:1px solid #257688;color:#048aa8;}
+.eno-datagrid thead th{font-weight:100;}
+.eno-datagrid tbody tr{border-bottom:1px solid #eee;color:#555;}

@@ -1,0 +1,18 @@
+{
+#---------
+# 常量
+#---------
+"ES_POWER":"Powered by Enozoom studio",
+"ES_AUTHOR":"Joe",
+"ES_LINK":"http://www.enozoom.com",
+"ES_TEL":"15552928239",
+"ES_VERSION":"4.0160621",
+"ES_INTRO":"",
+
+# 微信设置
+"APP_ID":"APP_ID",
+"APP_SECRET":"APP_SECRET ",
+"ENCODING_AES_KEY":"ENCODING_AES_KEY",
+# 默认token均为enozoomstudio
+
+}
