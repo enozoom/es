@@ -115,6 +115,8 @@ var VALIDATE =
                             preg = /^20\d{2}-\d{1,2}-\d{1,2}$/;
                         break;case 5:// 手机
                             preg = /^1\d{10}$/;
+                        break;case 6:// 邮箱
+                            preg = /^[\w]+@[\w\.]+\.[a-zA-Z]{2,4}$/;
                         break;
                     }
                     return preg.test(v);
