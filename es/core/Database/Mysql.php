@@ -172,7 +172,9 @@ class Mysql implements DatabaseInterface{
     $tablename = $this->tablename($tablename);
   
     empty($select) && $select = '*';
-    $select == '*' || $select = '`'.str_replace(',','`,`', preg_replace('/\s*/','',$select)).'`';
+    if($select != '*' && strpos($select, 'AS') === FALSE ){
+        $select = '`'.str_replace(',','`,`', preg_replace('/\s*/','',$select)).'`';
+    }
   
     $sql = "SELECT {$select} FROM `{$tablename}`";
   
