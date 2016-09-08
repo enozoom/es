@@ -1,7 +1,7 @@
 body{font-family:"Microsoft YaHei";}
 article,blockquote,body,dd,dl,dt,figure,h1,h2,h3,h4,h5,h6,li,ol,p,section,table,td,tr,ul{margin:0;padding:0}ol,ul{list-style:none}
 a,ins{text-decoration:none;color:inherit}
-input,button{font-family:"MicrosoftYaHei"}
+input,button{font-family: inherit;}
 a img{border:none}
 .f-left{float:left}.f-right{float:right}.clear-f{clear:both}.fix-float{zoom:1;overflow:hidden}
 .t-center{text-align:center}.t-left{text-align:left}.t-right{text-align:right}
@@ -40,3 +40,4 @@ button i,.btn i{margin-right:3px;}
 .btn-orange-outline.btn-smallx2{line-height:20px;}
 .es-row{display:table;width:100%;}
 .es-col{display:table-cell;vertical-align:middle;}
+	
