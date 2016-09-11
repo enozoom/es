@@ -41,6 +41,26 @@ trait Ary {
         return $ary;
     }
     
+    /**
+     * 对数据进行过滤
+     * 场景：如$_POST提交的数据可能与数据库的数据相同(未变化)，此时不更改相同数据，仅更改非变化数据。
+     * @param mix $post 要过滤的数组或独享
+     * @param object $obj 数据库的原数据
+     * @return mix 过滤后的数组或对象
+     */
+    protected function filterData($post,$obj){
+        $return = [];
+        $isAry = TRUE;
+        if( is_object($post) ){
+            $isAry = FALSE;
+            $post = (array)$post;
+        }
+        foreach( $post as $k=>$v ){
+            !empty($v) && isset($obj->$k) && $v != $obj->$k && $return[$k] = $v;
+        }
+        return $isAry?$post:(object)$post;
+    }
+    
 }
 
 ?>
