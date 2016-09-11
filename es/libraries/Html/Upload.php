@@ -66,7 +66,11 @@ class Upload{
  * 上传图片
  * @return false|上传后的地址
  */
-  public function upload(){
+  public function upload($iptName='',$uploadDir='',$exType=[]){
+    empty($iptName) || $this->iptname = $iptName;
+    empty($uploadDir) || $this->upload_dir = $uploadDir;
+    empty($exType) || $this->ext_type = $exType;
+    
     if( !empty($_FILES) && !empty($_FILES[$this->iptname]) && !$_FILES[$this->iptname]['error'] ){
       $size = $_FILES[$this->iptname]['size'];
       if($this->max_size > $size){
@@ -87,7 +91,7 @@ class Upload{
         }
       }
     }
-    return false;
+    return FALSE;
   }
   
   private function thumb(){
