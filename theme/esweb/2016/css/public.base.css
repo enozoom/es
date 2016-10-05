@@ -9,7 +9,7 @@ a img{border:none}
 .bsbb{box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;}
 .nowrap{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 .block{display:block;}.light{font-weight:100;}
-button,.btn{border:none;display:inline-block;box-sizing:border-box;cursor:pointer;
+button,.btn{border:none;display:inline-block;box-sizing:border-box;cursor:pointer;white-space: nowrap;
 ;border-radius:3px;font-size:14px;height:40px;line-height:40px;;padding:0px 20px;}
 button i,.btn i{margin-right:3px;}
 .btn-blue{background-color:#1d6ead;color:#fff;}
