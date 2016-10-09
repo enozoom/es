@@ -15,7 +15,7 @@ final class Home extends HtmlController{
    * 前台预览网址：http://localhost/esweb/home/demo
    */
   public function demo(){
-    $this->load->model('Demo'，'D');
+    $this->load->model('Demo','D');
     // 获取所有行
     $data1 = $this->D->_get();
     $sql = $this->D->db->last_query();// 上一次数据库执行语句
@@ -58,4 +58,3 @@ final class Home extends HtmlController{
     
   }
 }
-?>
