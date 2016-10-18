@@ -2,13 +2,11 @@
 <html>
 <head>
 <title><?php echo $tit?></title>
-<meta content="text/html; charset=utf-8" http-equiv="Content-type">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <meta name="robots" content="noindex,nofollow,noarchive" />
 <style>
-p{
- font-weight: bold;font:22px 黑体;
-}
+body{font-family:"Microsoft YaHei";}
 #footer{
   width:70px;text-align: center;position: absolute;bottom:20px;left:50%;margin-left:-35px;
   border:1px solid #0088cc;height:30px;line-height:30px;
