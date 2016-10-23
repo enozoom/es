@@ -33,14 +33,13 @@ trait RequestTrait{
   {
     $uri = $_SERVER['REQUEST_URI'];
     isset($_SERVER['HTTP_X_ORIGINAL_URL']) && $uri = $_SERVER['HTTP_X_ORIGINAL_URL'];
-    
-    if( ($idx = strpos($uri,'?')) && strpos($uri,'=') ){// $_GET有参值
-      $_get = [];
-      $uri = substr( str_replace('amp','',$uri) ,$idx+1 );
-        
-      foreach( explode('&',$uri) as $kv ){
-        $_kv = explode('=',$kv);
-        $_get[$_kv[0]] = $_kv[1];
+    $uri = parse_url($uri,PHP_URL_QUERY);
+    $_get = [];
+    if( !empty($uri) ){// $_GET有参值
+      foreach( explode('&',str_replace('&amp', '&', $uri) ) as $kv ){
+        if($_kv = explode('=',$kv)){
+          (!empty($_kv[0]) && !empty($_kv[1])) && $_get[$_kv[0]] = $_kv[1];
+        }
       }
     }
     $_GET = empty($_get)?null:$_get;
