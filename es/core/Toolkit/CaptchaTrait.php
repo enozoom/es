@@ -2,7 +2,7 @@
 namespace es\core\Toolkit;
 
 use es\core\Toolkit\Curl;
-trait Captcha
+trait CaptchaTrait
 {
   use Curl;
   /**

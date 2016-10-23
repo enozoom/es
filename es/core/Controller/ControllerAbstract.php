@@ -2,10 +2,10 @@
 namespace es\core\Controller;
 use es\core\Load\Load;
 use es\core\Toolkit\Output;
-use es\core\Toolkit\Config;
+use es\core\Toolkit\ConfigTrait;
 
-abstract class AbstractController{
-  use Config;
+abstract class ControllerAbstract{
+  use ConfigTrait;
   
   private static $instance;
   public $load;
@@ -24,7 +24,7 @@ abstract class AbstractController{
   
   public function closeDB(){
     foreach( get_object_vars($this) as $var=>$val ){
-      if($val instanceof \es\core\Model\Model){
+      if($val instanceof \es\core\Model\ModelAbstract){
         $this->$var->db->close();
         break;
       }

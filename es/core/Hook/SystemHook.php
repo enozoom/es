@@ -1,7 +1,7 @@
 <?php
 namespace es\core\Hook;
 
-class SystemHook extends AbstractHook{
+class SystemHook extends HookAbstract{
 /**
  * 框架加载前
  * {@inheritDoc}
@@ -13,7 +13,7 @@ class SystemHook extends AbstractHook{
       die('Requires PHP version between 5.5.x and 5.6.x, Your version: ' . PHP_VERSION );
     }
     // 防御XSS攻击
-    \es\core\Toolkit\Xss::defense();
+    \es\core\Toolkit\XssStaitc::defense();
   }
   public function after(){
     

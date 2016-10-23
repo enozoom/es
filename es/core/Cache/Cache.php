@@ -6,13 +6,13 @@
  */
 namespace es\core\Cache;
 
-use es\core\Toolkit\Config;
-use es\core\Toolkit\File;
-use es\core\Toolkit\Time;
-use es\core\Http\Header;
+use es\core\Toolkit\ConfigTrait;
+use es\core\Toolkit\FileStatic;
+use es\core\Toolkit\TimeStatic;
+use es\core\Http\HeaderTrait;
 
 class Cache{
-  use Config,File,Time,Header;
+  use ConfigTrait,HeaderTrait;
   /**
    * 打开缓存功能
    * @var bool
@@ -87,9 +87,9 @@ class Cache{
   public function save($html,$len=1024){
     if($this->is_allow_cache() && mb_strlen($html,'UTF-8')>$len){
       $file = $this->cache_file_path();
-      $html = File::cleanHtmlblank($html);
+      $html = FileStatic::cleanHtmlblank($html);
       $es = PHP_EOL."<!--[[".ES_POWER.' '.ES_AUTHOR.' '.
-                   Time::formatTime().' '.
+                   TimeStatic::formatTime().' '.
                    $this->cache_file_rule().
                    time()."]]-->";// 该值用以判断是否过期
       file_put_contents($file, $html.$es);
@@ -174,7 +174,7 @@ class Cache{
    * @return string
    */
   protected function cache_dir_rule(){
-    return self::mkdir(APPPATH."cache/{$this->cache_path}/{$this->cmdq->d}/{$this->cmdq->c}");
+    return FileStatic::mkdir(APPPATH."cache/{$this->cache_path}/{$this->cmdq->d}/{$this->cmdq->c}");
   }
   
   /**

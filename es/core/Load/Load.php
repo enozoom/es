@@ -1,12 +1,12 @@
 <?php
 namespace es\core\Load;
 
-use es\core\Controller\AbstractController;
-use es\core\Toolkit\Injection;
+use es\core\Controller\ControllerAbstract;
+use es\core\Toolkit\InjectionTrait;
 
 class Load
 {
-    use Injection;
+    use InjectionTrait;
     
     private $dir_model   = 'models/';
     private $dir_view    = 'views/';
@@ -56,7 +56,7 @@ class Load
     {
       $clsName = preg_replace('|(\w+[^\w]+)*(\w+)$|', '$2', $cls);
       empty($alias) && $alias = $clsName;
-      if(!property_exists(AbstractController::getInstance(),$alias)){
+      if(!property_exists(ControllerAbstract::getInstance(),$alias)){
           foreach( [APPPATH,SYSPATH] as $path ){
               if( file_exists( $file = $path.$this->dir_library.str_replace('\\','/',$cls).'.php' ) ){
                   $cls = str_replace($clsName, ucfirst($clsName), substr(str_replace('/', '\\', $file),0,-4) );
@@ -72,7 +72,7 @@ class Load
     public function model($cls,$alias=FALSE)
     {
       empty($alias) && $alias = $cls;
-      if(!property_exists(AbstractController::getInstance(),$alias)){
+      if(!property_exists(ControllerAbstract::getInstance(),$alias)){
           $cls = str_replace('/','\\',APPPATH.$this->dir_model).ucfirst($cls);
           $_model = new $cls();
           is_subclass_of($_model,'\es\core\Model\Model') || $this->tpl_err($cls.'非ES_model子类');
@@ -90,6 +90,6 @@ class Load
     
     private function &Ctrl()
     {
-      return AbstractController::getInstance();
+      return ControllerAbstract::getInstance();
     }
 }

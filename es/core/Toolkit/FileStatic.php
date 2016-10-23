@@ -4,13 +4,12 @@
  */
 namespace es\core\Toolkit;
 
-trait File {
-  use Str;
+class FileStatic {
   /**
    * 生成文件夹
    * 注意要生成的文件的位置权限是否可写
    * @param string $filepath 生成的路径
-   * @param bool $timedir     是否开启时间格式文件夹
+   * @param bool $timedir    是否开启时间格式文件夹名
    *
    * @return string 生成的文件路径
    */

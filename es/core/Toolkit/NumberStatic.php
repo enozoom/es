@@ -2,7 +2,7 @@
 
 namespace es\core\Toolkit;
 
-final class StaticNumber
+final class NumberStatic
 {
     /**
      * 一个只增不减的数

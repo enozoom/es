@@ -23,7 +23,7 @@ namespace es\core\Toolkit;
  * Powered by Enozoomstudio
  * 2016年7月9日下午1:40:53
  */
-trait Config{
+trait ConfigTrait{
 /**
  * 通过键获取对应的键的值
  * @param string $key

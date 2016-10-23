@@ -7,7 +7,7 @@ namespace es\core\Model;
 use es\core\Database\Mysql;
 use es\core\Toolkit\Config;
 use es\core\Toolkit\Ary;
-abstract class Model{
+abstract class ModelAbstract{
   use Config,Ary;
   
   protected $db;

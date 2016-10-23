@@ -4,7 +4,7 @@
  */
 namespace es\core\Toolkit;
 
-trait Str {
+final class StrStatic {
     public static function cleanStyleAndScript($htm){
         $filterStyleScript = preg_replace('/<(s(cript|tyle))[^>]*>([^<]*)<\/\1>/', '', self::cleanHtmlblank($htm));
         return preg_replace('/style\s*=\s*(\'|")[^\1]*?\1/', '', $filterStyleScript);

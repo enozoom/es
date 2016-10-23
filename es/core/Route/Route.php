@@ -2,10 +2,10 @@
 namespace es\core\Route;
 
 use es\core\Cache\Cache;
-use es\core\Http\Response;
+use es\core\Http\ResponseTrait;
 
 class Route{
-  use Response;
+  use ResponseTrait;
   public function initController(){
     // 开始缓存
     $cache = new Cache();
@@ -36,8 +36,8 @@ class Route{
     
     $cls = $reflector->newInstance();
     
-    is_subclass_of($cls,'\es\core\Controller\AbstractController') || 
-    $this->show_503('控制器必须是\es\core\Controller\AbstractController的子类','非控制器实例类');
+    is_subclass_of($cls,'\es\core\Controller\ControllerAbstract') || 
+    $this->show_503('控制器必须是\es\core\Controller\ControllerAbstract的子类','非控制器实例类');
     
     $rMethod->invokeArgs($cls,$args);
     $cls->closeDB();// 关闭数据库

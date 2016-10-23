@@ -8,8 +8,8 @@ namespace es\core\Toolkit;
  * Powered by Enozoomstudio
  * 2016年6月5日下午2:45:48
  */
-final class Xss{
-  use Injection;
+final class XssStaitc{
+  use InjectionTrait;
   public static function defense(){
     $url_arr=[ 'xss'=>"\\=\\+\\/v(?:8|9|\\+|\\/)|\\%0acontent\\-(?:id|location|type|transfer\\-encoding)", ];
     

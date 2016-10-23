@@ -5,7 +5,7 @@
  * Powered by Enozoomstudio
  * 2016年6月5日下午2:54:48
  */
-abstract class AbstractHook{
+abstract class HookAbstract{
   public abstract function before();
   public abstract function after();
   

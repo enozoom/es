@@ -1,9 +1,9 @@
 <?php
 namespace es\core\Toolkit;
 
-use \es\core\Toolkit\Config;
-trait Auth{
-    use Config;
+use \es\core\Toolkit\ConfigTrait;
+trait AuthTrait{
+    use ConfigTrait;
     // 生成签名
     protected function generateSign($str)
     {

@@ -1,12 +1,12 @@
 <?php
 namespace es\core\Controller;
 
-use es\core\Http\Response;
-use es\core\Http\Request;
+use es\core\Http\ResponseTrait;
+use es\core\Http\RequestTrait;
 
-class HtmlController extends AbstractController
+class HtmlController extends ControllerAbstract
 {
-    use Response,Request;
+    use ResponseTrait,RequestTrait;
     public $title;
     public $keywords;
     public $description;

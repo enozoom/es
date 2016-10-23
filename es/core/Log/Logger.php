@@ -17,11 +17,11 @@ namespace es\core\Log;
 use es\libraries\Psr\Log\LoggerInterface;
 use es\libraries\Psr\Log\LoggerTrait;
 use es\libraries\Psr\Log\LogLevel;
-use es\core\Toolkit\File;
-use es\core\Toolkit\Time;
+use es\core\Toolkit\FileStatic;
+use es\core\Toolkit\TimeStatic;
 
 class Logger implements LoggerInterface{
-  use LoggerTrait,File,Time;
+  use LoggerTrait;
   
   private static $instance;
   private function __construct()
@@ -63,18 +63,18 @@ class Logger implements LoggerInterface{
             }
           }
           
-          $message = '【'.self::formatTime().'】'.
+          $message = '【'.TimeStatic::formatTime().'】'.
                      PHP_EOL.$message.
                      PHP_EOL.$trace.
                      PHP_EOL.PHP_EOL;
           
         break;case LogLevel::ALERT:// 报警
-          $message = '【'.self::formatTime().'】'.PHP_EOL.$message.PHP_EOL.PHP_EOL;
+          $message = '【'.TimeStatic::formatTime().'】'.PHP_EOL.$message.PHP_EOL.PHP_EOL;
         default:
           $message = $this->interpolate($message,$context);
         break;
       }
-      $this->write($message, $file);
+      FileStatic::write($message, $file);
   }
   
   
@@ -93,7 +93,7 @@ class Logger implements LoggerInterface{
   }
   
   private function filePath($level=LogLevel::ERROR){
-      return $this->mkdir('logs/'.$level,1).date('Y-m-d').'.log';
+      return FileStatic::mkdir('logs/'.$level,1).date('Y-m-d').'.log';
   }
   
 }

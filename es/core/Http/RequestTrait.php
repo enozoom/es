@@ -1,7 +1,7 @@
 <?php
 namespace es\core\Http;
 
-trait Request{
+trait RequestTrait{
     
   /**
    * 获取当家uri中的host部分，与传入的参数组成网址
@@ -9,7 +9,11 @@ trait Request{
    * @return string
    */
   protected function baseUrl($url=''){
-      return strpos($url, 'http://')===FALSE?('http://'.str_replace('//','/',$_SERVER['HTTP_HOST'].'/'.$url)):$url;
+      if( strpos($url, 'http://') === FALSE && strpos($url, 'https://') === FALSE ){
+          $url = 'http://'.str_replace('//','/',$_SERVER['HTTP_HOST'].'/'.$url);
+      }
+      var_dump($url);
+      return $url;
   }
   /**
    * 请求的方法
@@ -56,12 +60,12 @@ trait Request{
     curl_setopt($ch,CURLOPT_SSL_VERIFYPEER ,FALSE);
     curl_setopt($ch,CURLOPT_SSL_VERIFYHOST ,FALSE);
     $output = curl_exec($ch);
-    if($output === false){
-      if(trait_exists( '\\es\\core\\Toolkit\\Config' )){
+    
+    if(  $output === false){
+      if(trait_exists( '\\es\\core\\Toolkit\\ConfigTrait' )){
         $this->getConfigs('logger')->debug(curl_error($ch));
       }
     }
-    curl_close($ch);
     return $output;
   }
   

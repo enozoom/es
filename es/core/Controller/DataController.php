@@ -7,9 +7,9 @@
  */
 namespace es\core\Controller;
 
-use es\core\Http\Response;
-class DataController extends AbstractController{
-  use Response{ render as private oRender; }
+use es\core\Http\ResponseTrait;
+class DataController extends ControllerAbstract{
+  use ResponseTrait{ render as private oRender; }
   
   protected function render($str='',$type='html',$httpCache=24){
     $this->oRender($str,$type,$httpCache);

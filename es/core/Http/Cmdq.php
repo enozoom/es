@@ -1,8 +1,8 @@
 <?php
 namespace es\core\Http;
 
-use es\core\Http\Response;
-use es\core\Http\Request;
+use es\core\Http\ResponseTrait;
+use es\core\Http\RequestTrait;
 /**
  * 将请求翻译成[c=>controller,m=>method,d=>directory,q=querystring]
  * @author Joe e@enozoom.com
@@ -11,7 +11,7 @@ use es\core\Http\Request;
  */
 
 class Cmdq{
-  use Response,Request;
+  use ResponseTrait,RequestTrait;
   
   public function get(){
     $cmdq = $this->resolve();

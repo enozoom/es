@@ -7,7 +7,7 @@
  */
 namespace es\core\Toolkit;
 
-trait Injection{
+trait InjectionTrait{
 /**
  * 将变量注入到一个模板,并输出模板内容和状态码
  * @param string $tamplate

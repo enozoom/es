@@ -1,7 +1,7 @@
 <?php
 namespace es\core\Toolkit;
 
-trait Time{
+class TimeStatic{
   
   /**
    * 格式一个时间戳

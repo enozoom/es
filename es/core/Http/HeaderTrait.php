@@ -1,7 +1,7 @@
 <?php
 namespace es\core\Http;
 
-trait Header{
+trait HeaderTrait{
   
 /**
   * http浏览器响应缓存

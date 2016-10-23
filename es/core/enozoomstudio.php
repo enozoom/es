@@ -5,7 +5,7 @@
  * 2016年6月24日09:44:36
  */
 namespace es\core;
-use es\core\Load\Config;
+use es\core\Load\ConfigStatic;
 use es\core\Hook\SystemHook;
 use es\core\Http\Cmdq;
 use es\core\Route\Route;
@@ -23,7 +23,7 @@ spl_autoload_register(function($classname){
 });
 
 // 配置文件
-$CONFIGS = Config::init();
+$CONFIGS = ConfigStatic::init();
 // 日志
 $CONFIGS->logger = Logger::getInstance();
 

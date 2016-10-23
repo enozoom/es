@@ -2,7 +2,7 @@
 
 namespace es\core\Toolkit;
 
-trait Ary {
+trait AryTrait{
     /**
      * $keys中的值是否存在于$data的键中
      * @param array $keys

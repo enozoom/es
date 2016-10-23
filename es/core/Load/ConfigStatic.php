@@ -10,7 +10,7 @@ namespace es\core\Load;
  * 修正读取时字符串空格丢失的问题
  */
 
-final class Config{
+final class ConfigStatic{
   static $configs;
 
 /**

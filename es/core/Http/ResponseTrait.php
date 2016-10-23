@@ -1,12 +1,12 @@
 <?php
 namespace es\core\Http;
 
-use es\core\Toolkit\Injection;
-use es\core\Toolkit\Config;
-use es\core\Http\Header;
+use es\core\Toolkit\InjectionTrait;
+use es\core\Toolkit\ConfigTrait;
+use es\core\Http\HeaderTrait;
 
-trait Response{
-  use Injection,Config,Header;
+trait ResponseTrait{
+  use InjectionTrait,ConfigTrait,HeaderTrait;
   
   protected function show_503($msg='',$tit='503 Service Unavailable')
   {
