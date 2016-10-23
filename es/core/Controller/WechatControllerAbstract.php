@@ -33,7 +33,7 @@ abstract class WechatControllerAbstract extends DataController
      * 则服务器配置URL填入：http://Yourhost/controller_dir/mywechat
      * 提醒服务器配置的Token(令牌)需要填写：enozoomstudio
      */
-    public function index(){
+    final public function index(){
         $this->Wechat->_is_wechat() && $this->Wechat->callback();
     }
     
