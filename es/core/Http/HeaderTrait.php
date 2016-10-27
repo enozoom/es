@@ -56,7 +56,19 @@ trait HeaderTrait{
     headers_sent() || header('Content-type: '.$m.(empty($utf8)?'':'; charset=utf-8') );
   }
   
-
+  /**
+   * 允许跨域访问
+   * @param string $url 外部网址
+   * @param string $mime 页面的响应形式
+   */
+  protected function cors($url='*',$mime='json'){
+      if( $url=='*' || $_SERVER['HTTP_ORIGIN'] == $url){
+          header("Access-Control-Allow-Origin: {$url}");
+          $this->httpMime($mime,true);
+      }else{
+          http_response_code(503);
+      }
+  }
 /**
  * 跳转
  * @param string $url
