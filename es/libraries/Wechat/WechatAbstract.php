@@ -171,9 +171,8 @@ abstract class WechatAbstract
      *
      * @return bool 是否成功
      */
-    protected function generate_menu($data){
-        $menus = json_encode( array('button'=>$data), JSON_UNESCAPED_UNICODE );
-        //$menus = array('button'=>$data);
+    public function generate_menu($data){
+        $menus = json_encode( ['button'=>$data], JSON_UNESCAPED_UNICODE );
         $url = sprintf('https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s',$this->access_token);
         $json = $this->curlPost($url, $menus,1);
         return $json->errcode == 0;
@@ -245,6 +244,4 @@ abstract class WechatAbstract
         $nonce = StrStatic::randomString('numeric');
         return $this->sha1_sign($encrypt, $timestamp, $nonce);
     }
-    
-    
 }
