@@ -12,7 +12,6 @@ trait RequestTrait{
       if( strpos($url, 'http://') === FALSE && strpos($url, 'https://') === FALSE ){
           $url = 'http://'.str_replace('//','/',$_SERVER['HTTP_HOST'].'/'.$url);
       }
-      var_dump($url);
       return $url;
   }
   /**
@@ -26,6 +25,14 @@ trait RequestTrait{
     return empty($method)?$m:$m==$method;
   }
 
+  /**
+   * 将提交的json转化成对象
+   */
+  protected function phpInputData(){
+      $data = file_get_contents('php://input');
+      return empty($data)?null:json_decode($data);
+  }
+  
 /**
  * 重写$_GET
  */
@@ -85,9 +92,6 @@ trait RequestTrait{
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
     $return = curl_exec($ch);
-    if(trait_exists( '\\es\\core\\Toolkit\\Config' )){
-      //$this->getConfigs('logger')->debug($return);
-    }
     
     curl_errno($ch) && $return = '';// 出现异常
     curl_close($ch);
