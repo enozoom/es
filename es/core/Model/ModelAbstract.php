@@ -5,10 +5,10 @@
 namespace es\core\Model;
 
 use es\core\Database\Mysql;
-use es\core\Toolkit\Config;
-use es\core\Toolkit\Ary;
+use es\core\Toolkit\ConfigTrait;
+use es\core\Toolkit\AryTrait;
 abstract class ModelAbstract{
-  use Config,Ary;
+  use ConfigTrait,AryTrait;
   
   protected $db;
   protected $tableName;

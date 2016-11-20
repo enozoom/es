@@ -75,7 +75,7 @@ class Load
       if(!property_exists(ControllerAbstract::getInstance(),$alias)){
           $cls = str_replace('/','\\',APPPATH.$this->dir_model).ucfirst($cls);
           $_model = new $cls();
-          is_subclass_of($_model,'\es\core\Model\Model') || $this->tpl_err($cls.'非ES_model子类');
+          is_subclass_of($_model,'\es\core\Model\ModelAbstract') || $this->tpl_err($cls.'非ES_model子类');
           $this->Ctrl()->$alias = &$_model;
       }
       return $this;

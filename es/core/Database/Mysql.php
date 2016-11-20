@@ -1,8 +1,8 @@
 <?php
 namespace es\core\Database;
-use es\core\Toolkit\Config;
+use es\core\Toolkit\ConfigTrait;
 class Mysql implements DatabaseInterface{
-  use Config;
+  use ConfigTrait;
   protected $mysqli;
   protected static $instance;
   protected $last_query = '';
