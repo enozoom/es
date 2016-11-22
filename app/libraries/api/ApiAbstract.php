@@ -1,10 +1,10 @@
 <?php
 namespace app\libraries\api;
-use es\core\Controller\AbstractController;
-use es\core\Toolkit\Ary;
-use es\core\Http\Request;
+use es\core\Controller\ControllerAbstract;
+use es\core\Toolkit\AryTrait;
+use es\core\Http\RequestTrait;
 abstract class ApiAbstract{
-    use ary,Request;
+    use AryTrait,RequestTrait;
     public function __construct(){
         $this->load = $this->ctrl('load');
     }
@@ -20,7 +20,7 @@ abstract class ApiAbstract{
     }
     
     protected function ctrl($attr=''){
-        $ES = AbstractController::getInstance();
+        $ES = ControllerAbstract::getInstance();
         if(!empty($attr) && property_exists($ES, $attr) ){
             return $ES->$attr;
         }else{
