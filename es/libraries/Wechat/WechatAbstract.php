@@ -1,7 +1,6 @@
 <?php
 namespace es\libraries\Wechat;
 /**
- * 微信端的页面使用ionic,所以无需再继承HtmlController
  * @author Joe e@enozoom.com
  * Powered by Enozoomstudio
  * 2016年10月23日上午11:11:35

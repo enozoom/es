@@ -1,6 +1,9 @@
 <?php
 namespace es\libraries\Wechat;
-
+/**
+ * 将数组转换成XML
+ * 2016年11月23日13:49:31
+ */
 class SimpleXMLExtended extends \SimpleXMLElement{
   public function addCData($cdata_text){
     if(!is_numeric($cdata_text)){
@@ -30,7 +33,7 @@ class Arr2xmlStatic{
       if(is_array($v)){
         is_numeric($k) && $k = substr($xml->getName(),0,-1);
         $subroot = $xml->addChild($k);
-        Arr2xml::node($v,$subroot);
+        self::node($v,$subroot);
       }else{
         if(is_numeric($v)){
           $xml->addChild($k,$v);
@@ -50,7 +53,7 @@ class Arr2xmlStatic{
 */  
   public static function toXml($data, $root = 'xml',$return_header=FALSE){
     $xml = new SimpleXMLExtended("<?xml version='1.0' encoding='utf-8'?><{$root} />");
-    Arr2xml::node($data,$xml);
+    self::node($data,$xml);
     $xmlstr = $xml->asXML();
     $xmlstr = preg_replace('@<\?.*?>@','',$xmlstr);
     return trim($xmlstr);

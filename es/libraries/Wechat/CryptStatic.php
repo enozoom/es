@@ -6,6 +6,7 @@ namespace es\libraries\Wechat;
 * 2015年10月9日 上午8:45:26
 */
 use es\core\Log\LogTrait;
+use es\core\Toolkit\StrStatic;
 class CryptStatic{
     use LogTrait;
     public static $block_size = 32;
@@ -93,7 +94,7 @@ class CryptStatic{
         $xml_content = substr($content, 4, $xml_len);
         $from_appid = substr($content, $xml_len + 4);
       }
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
       $this->log('消息体自身非法');
     }
     // 经测试，$from_appid含有其他UTF-8字符所以不等于appid
@@ -113,7 +114,7 @@ class CryptStatic{
     $encrypted = '';
     $key = self::key($encodingAesKey);
     try {
-     $random = \es\core\random_string('alnum',16);
+     $random = StrStatic::randomString('alnum',16);
      $text = $random . pack("N", strlen($text)) . $text . $appid;
      // 网络字节序
      $size = mcrypt_get_block_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
