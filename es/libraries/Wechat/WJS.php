@@ -7,7 +7,7 @@ namespace es\libraries\Wechat;
 */
 use es\core\Toolkit\FileStatic;
 use es\core\Http\RequestTrait;
-class WJSStatic{
+class WJS{
   use RequestTrait;
 /**
  * 缓存文件的存放路径
@@ -22,7 +22,7 @@ class WJSStatic{
   * @param string $access_token 
   * @return string
   */
-  public static function jsapi_ticket($access_token){
+  public function jsapi_ticket($access_token){
     // 从没有获取过access_token或者已经过期
     $path = FileStatic::cache_file();
    
@@ -72,14 +72,14 @@ class WJSStatic{
  * 获取当前微信用户的openid,
  * 前提必须是api_wechat->wechat_openid_link()或其他生成一个微信获权跳转回来的地址
  * 地址带有?code=CODE参数，依靠参数获取openid
- * 本方法仅到获取openid未知，不再获取用户详细信息。
+ * 本方法仅到获取openid，不再获取用户详细信息。
  * 
  * @param  string $code
  * @param  string $appid
  * @param  string $appsecret
  * @return string $openid 如果正常则获取openid或返回空字符串
  */
-  public static function user_openid($code,$appid,$appsecret){
+  public function user_openid($code,$appid,$appsecret){
     $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code';
     $url = sprintf($url,$appid,$appsecret,$code);
     $json = json_decode( $this->curlGet($url) );
@@ -109,7 +109,7 @@ class WJSStatic{
  * @param string $access_token
  * @return object {subscribe:,openid:,nickname:,sex:,language:,city:,province:,country:,headimgurl:,subscribe_time:,unionid:,remark:,groupid:}
  */
-  public static function usr_info_by_openid($openid,$access_token){
+  public function usr_info_by_openid($openid,$access_token){
     if(empty($openid)) return '';
     $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=zh_CN';
     $url = sprintf($url,$access_token,$openid);

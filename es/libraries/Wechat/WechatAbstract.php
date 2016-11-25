@@ -11,6 +11,7 @@ use es\core\Http\RequestTrait;
 use es\core\Toolkit\AryTrait;
 use es\core\Toolkit\StrStatic;
 use es\core\Toolkit\FileStatic;
+use es\libraries\wechat\QrStatic;
 
 abstract class WechatAbstract
 {
@@ -30,6 +31,7 @@ abstract class WechatAbstract
         $this->encodingAesKey = $encodingAesKey;
         empty($token) || $this->token = $token;
         $this->access_token = $this->access_token();
+        $this->WJS = new WJS();
     }
     
     // --------------------------------------------------------------------------------------
@@ -112,7 +114,7 @@ abstract class WechatAbstract
      * @return
      */
     protected function jsapi_sign($noncestr,$timestamp,$url=''){
-        return WJSStatic::jsapi_sign($this->access_token, $noncestr, $timestamp, $url);
+        return $this->WJS->jsapi_sign($this->access_token, $noncestr, $timestamp, $url);
     }
     
     //--------------------------------------------------------------------------------------
@@ -125,7 +127,7 @@ abstract class WechatAbstract
      * @param  string $scope 范围：snsapi_base 静默模式，snsapi_userinfo 需手动确定
      * @return string
      */
-    protected function wechat_openid_link($redirect,$scope='snsapi_base'){
+    public function wechat_openid_link($redirect,$scope='snsapi_base'){
         $https = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=ES#wechat_redirect';
         $url = str_replace('http%3A%2F%2F','http://', urlencode($redirect));
         $url = urlencode($redirect);
@@ -139,18 +141,18 @@ abstract class WechatAbstract
      * @return string
      */
     protected function user_openid($code){
-        return WJSStatic::user_openid($code, $this->appid, $this->appSecret);
+        return $this->WJS->user_openid($code, $this->appid, $this->appSecret);
     }
     
     /**
      * 根据微信跳转而来的带有code参数的链接
-     * 获取openid，然后使用openid获取当前用的信息
+     * 获取openid，然后使用openid获取当前用户的信息
      * @param string $code
      * @return object
      */
     protected function user_info($code){
         $openid = $this->user_openid($code);
-        return WJSStatic::usr_info_by_openid($openid,$this->access_token);
+        return $this->WJS->usr_info_by_openid($openid,$this->access_token);
     }
     
     /**
