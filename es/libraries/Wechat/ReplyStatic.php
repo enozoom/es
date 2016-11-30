@@ -38,7 +38,6 @@ class ReplyStatic{
  */
   public static function article($to,$from,$articles){
     $count = count($articles);
-    
     if(isset($articles['Title'])){// 只有一篇图文
       $articles = ['item'=>$articles];
       $count = 1;

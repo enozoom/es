@@ -108,4 +108,12 @@ final class StrStatic {
     public static function isMobile($mobile=''){
         return preg_match('/^1[34578]\d{9}$/', $mobile);
     }
+    
+    /**
+     * 判断是否是中文
+     * @param string $txt
+     */
+    public static function isChinese($txt){
+        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $txt);
+    }
 }

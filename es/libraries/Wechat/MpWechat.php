@@ -15,6 +15,7 @@ class MpWechat extends WechatAbstract
      */
     public function callback(){
         $req = parent::callback();
+        $this->log($req);
         empty($_GET) && die();// 必须有附带参数
         extract($_GET);
         if($this->sha1_sign($req->Encrypt,$timestamp,$nonce,$msg_signature)){
@@ -27,7 +28,6 @@ class MpWechat extends WechatAbstract
                     $reply = $ES->_events($req);
                 break;
             }
-            
             empty($reply) && die();
             list($method,$args) = $reply;
             $args = array('to'=>$req->FromUserName,'from'=>$req->ToUserName) + $args;
@@ -36,7 +36,7 @@ class MpWechat extends WechatAbstract
 
             $xml = $rMethod->invokeArgs( $reflector->newInstanceWithoutConstructor(), $args );
             //$this->log($xml); // 未加密的消息体
-            //die($xml);
+            die($xml);
             $xml = $this->crypt_generate($xml);
             $signature = $this->set_sha1_sign($xml, $timestamp, $nonce);
             $xml = ReplyStatic::crypt_xml($xml,$signature, $timestamp, $nonce);
@@ -45,5 +45,4 @@ class MpWechat extends WechatAbstract
         }
         exit();
     }
-
 }
