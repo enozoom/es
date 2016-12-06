@@ -9,10 +9,10 @@ trait RequestTrait{
    * @return string
    */
   protected function baseUrl($url=''){
-      if( strpos($url, 'http://') === FALSE && strpos($url, 'https://') === FALSE ){
-          $url = 'http://'.str_replace('//','/',$_SERVER['HTTP_HOST'].'/'.$url);
-      }
-      return $url;
+      return 
+      ( strpos($url, 'http://') === FALSE && strpos($url, 'https://') === FALSE )?
+      ( 'http://'.str_replace('//','/',$_SERVER['HTTP_HOST'].'/'.$url) ):
+      $url;
   }
   /**
    * 请求的方法
@@ -80,18 +80,23 @@ trait RequestTrait{
  * @param string $url
  * @param array|string $post
  * @param number $is_json
+ * @param string header
  */
-  protected function curlPost($url,$post,$is_json=1)
+  protected function curlPost($url,$post,$is_json=1,$header=FALSE)
   {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $this->baseUrl($url));
-    curl_setopt($ch, CURLOPT_POST,true);
+    curl_setopt($ch, CURLOPT_POST,TRUE);
     curl_setopt($ch, CURLOPT_POSTFIELDS,is_array($post)?http_build_query($post):$post);
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+    empty($header) || curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
     $return = curl_exec($ch);
+    if(trait_exists( '\\es\\core\\Toolkit\\Config' )){
+      //$this->getConfigs('logger')->debug($return);
+    }
     
     curl_errno($ch) && $return = '';// 出现异常
     curl_close($ch);
