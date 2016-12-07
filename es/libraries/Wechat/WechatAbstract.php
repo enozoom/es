@@ -32,6 +32,7 @@ abstract class WechatAbstract
         empty($token) || $this->token = $token;
         $this->access_token = $this->access_token();
         $this->WJS = new WJS();
+        $this->Tpl = new TplMsg();
     }
     
     // --------------------------------------------------------------------------------------

@@ -15,7 +15,7 @@ class MpWechat extends WechatAbstract
      */
     public function callback(){
         $req = parent::callback();
-        $this->log($req);
+        //$this->log($req);
         empty($_GET) && die();// 必须有附带参数
         extract($_GET);
         if($this->sha1_sign($req->Encrypt,$timestamp,$nonce,$msg_signature)){
@@ -30,7 +30,7 @@ class MpWechat extends WechatAbstract
             }
             empty($reply) && die();
             list($method,$args) = $reply;
-            $args = array('to'=>$req->FromUserName,'from'=>$req->ToUserName) + $args;
+            $args = ['to'=>$req->FromUserName,'from'=>$req->ToUserName] + $args;
             $reflector = new \ReflectionClass( '\es\libraries\Wechat\ReplyStatic' );
             $rMethod = $reflector->getMethod( $method );
 
@@ -45,4 +45,14 @@ class MpWechat extends WechatAbstract
         }
         exit();
     }
+    
+    public function openid(){
+        $openid = '';
+        if( !empty($_GET['code']) ){
+            $openid = parent::user_openid($_GET['code']);
+        }
+        //$this->log($openid);
+        return $openid;
+    }
+    
 }
