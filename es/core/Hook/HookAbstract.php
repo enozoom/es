@@ -6,8 +6,18 @@
  * 2016年6月5日下午2:54:48
  */
 abstract class HookAbstract{
-  public abstract function before();
-  public abstract function after();
+  /**
+   * 控制器未初始化前
+   */
+  public abstract function beforeController();
+  /**
+   * 控制器实例化成功后
+   */
+  public abstract function afterController();
+  /**
+   * 控制器实例化成功后调用响应方法
+   */
+  public abstract function afterControllerMethod();
   
 /**
  * 获取钩子的子类并执行子类方法

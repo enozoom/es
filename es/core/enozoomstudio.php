@@ -32,7 +32,7 @@ error_reporting($CONFIGS->config->debug?E_ALL:0);
 
 // 系统前加载
 $CONFIGS->hook = new SystemHook;
-$CONFIGS->hook->before();
+$CONFIGS->hook->beforeController();
 
 // 请求
 $CONFIGS->cmdq = (new Cmdq())->get();
