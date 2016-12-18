@@ -3,7 +3,8 @@
 # 数据库
 #---------
 
-"driver":"Mysql",
+# /es/core/Database/DatabaseInterface的实现类名
+"driver":"SQLite",
 
 # 数据库地址
 "host":"",
