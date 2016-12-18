@@ -4,7 +4,6 @@
  */
 namespace es\core\Model;
 
-use es\core\Database\Mysql;
 use es\core\Toolkit\ConfigTrait;
 use es\core\Toolkit\AryTrait;
 abstract class ModelAbstract{
@@ -16,7 +15,21 @@ abstract class ModelAbstract{
   
   public function __construct()
   {
-    $this->db = Mysql::get_instance();
+    $conf = $this->getConfigs('database');
+    $db = 'es\\core\\Database\\'.$conf->driver;
+    $this->db = $db::get_instance();
+    $this->tableName_primaryKey();
+  }
+  
+  /**
+   * 自填充数据库表名及主键
+   */
+  private function tableName_primaryKey(){
+      if(empty($this->tableName) || empty($this->primaryKey)){
+         $cls = strtolower( substr(($cls = get_class($this)), strrpos($cls, '\\')+1) );
+         empty($this->tableName) && $this->tableName = $cls;
+         empty($this->primaryKey) && $this->primaryKey = $cls.'_id';
+      }
   }
   
   public function __get($var)
@@ -45,7 +58,7 @@ abstract class ModelAbstract{
         $limit = $page.','.$per;
       }
     }
-    empty($orderby) && $orderby = "{$this->primaryKey} desc";
+    empty($orderby) && $orderby = "{$this->primaryKey} DESC";
     return $this->db->_get($this->tableName,$where,$select,$orderby,$limit);
   }
   
