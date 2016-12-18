@@ -28,7 +28,7 @@ class SQLite extends \SQLite3 implements \es\core\Database\DatabaseInterface
             case 'SELECT':
                 $SQLite3Result = parent::query($sql);
                 $rs = [];
-                while ($row = $SQLite3Result->fetchArray()) {
+                while ($row = $SQLite3Result->fetchArray(SQLITE3_ASSOC)) {
                     $rs[] = (object)$row;
                 }
                 return $rs;
@@ -106,7 +106,7 @@ class SQLite extends \SQLite3 implements \es\core\Database\DatabaseInterface
         if(!$SQLite3Result->numColumns() ){
             return;
         }
-        while ($row = $SQLite3Result->fetchArray()) {
+        while ($row = $SQLite3Result->fetchArray(SQLITE3_ASSOC)) {
             yield (object)$row;
         }
     }
