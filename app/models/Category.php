@@ -2,20 +2,17 @@
 namespace app\models;
 
 use es\core\Model\ModelAbstract;
-use es\core\Toolkit\AuthTrait;
 use es\core\Toolkit\AryTrait;
 class Category extends ModelAbstract
 {
-    use AuthTrait,AryTrait;
+    use AryTrait;
     public function _attributes($attr = '')
     {
         $attrs = [
             'category_id'=>'#',
             'category_title'=>'分类名',
             'category_pid'=>'父ID',
-            'category_etc'=>'分类说明',
-            'category_sequence'=>'排序',
-            'category_timestamp'=>'创建时间'
+            'category_sequence'=>'排序'
         ];
         return empty($attr)?$attrs:(isset($attrs[$attr])?$attrs[$attr]:$attrs);
     }
