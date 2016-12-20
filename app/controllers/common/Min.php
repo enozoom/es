@@ -6,14 +6,14 @@ use es\core\Controller\DataController;
 final class min extends DataController{
     private $cache = FALSE;
     private $cache_dir;
-    private $cache_suffix = '.clej';
+    private $cache_suffix = '.cjss';
     private $def_dir;
     private $admin_dir;
 
     public function __construct()
     {
         parent::__construct();
-        $this->cache_dir = APPPATH.'cache/cssjsless/';
+        $this->cache_dir = APPPATH.'cache/cssjs/';
         $this->def_dir = './theme/'.$this->getConfig('theme_path').'/';
         $this->admin_dir = APPPATH.'data/esadmin/';
     }
