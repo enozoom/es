@@ -4,6 +4,7 @@ a,ins{text-decoration:none;color:inherit}
 input,button{font-family: inherit;}
 a img{border:none}
 .f-left{float:left}.f-right{float:right}.clear-f{clear:both}.fix-float{zoom:1;overflow:hidden}
+.after-clear{display:block;clear:both;content:"";}
 .t-center{text-align:center}.t-left{text-align:left}.t-right{text-align:right}
 .d-h{display:none}.blod{font-weight:700}:focus{outline:0}
 .bsbb{box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;}
