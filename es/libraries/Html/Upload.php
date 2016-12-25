@@ -6,10 +6,10 @@ namespace es\libraries\Html;
  * Powered by Enozoomstudio
  * 2016年5月10日下午2:28:14
  */
-use es\core\Toolkit\File;
-use es\core\Http\Request;
+use es\core\Toolkit\FileStatic;
+use es\core\Http\RequestTrait;
 class Upload{
-  use File,Request;
+  use RequestTrait;
   //| 文件上传的地址
   private $upload_dir = 'uploads/';
   //| 文件产生的缩略图大小
@@ -34,64 +34,66 @@ class Upload{
   private $suffix;
   //| 上传后的图片名
   private $pic_name;
+  //| 是否是File请求
+  private $isFile = FALSE;
   
 /**
  * 类入口
- * @param array $option [upload_dir,thumb,iptname,max_size,$with_host]
+ * @param array $option [upload_dir,thumb,iptname,max_size,with_host]
  * @return [url=>'源图路径',thumb=>'缩略图路径',cut=>'剪切图路径']
  */
   public function initialize($option=[]){
-    $vars = ['upload_dir','thumb','iptname','max_size','$with_host'];
-    foreach($option as $k=>$v){
-      in_array($k, $vars) && $this->{$k} = $v;
-    }
-    
-    $this->pic_url = $this->upload();
-    $result = ['url'=>$this->pic_url,'thumb'=>''];
-    
-    if( !empty($this->thumb) ){
-      $this->thumb();
-      $result = ['thumb'=>$this->thumb_url,'cut'=>$this->cut_url]+$result;
-    }
-    
-    if( $this->with_host ){
-      foreach($result as $k=>$v){
-        $result[$k] = $this->baseUrl($v);
+      $vars = ['upload_dir','thumb','iptname','max_size','with_host'];
+      foreach($option as $k=>$v){
+          in_array($k, $vars) && $this->{$k} = $v;
       }
-    }
-    return $result;
+      $result = ['url'=>'','thumb'=>''];
+      $this->isFileReq($this->iptname) && $this->isFile = TRUE;
+      
+      if( !empty($this->pic_url = $this->upload()) ){
+          $result['url'] = $this->pic_url;
+          if( !empty($this->thumb) ){
+              $this->thumb();
+              $result = ['thumb'=>$this->thumb_url,'cut'=>$this->cut_url]+$result;
+          }
+          
+          foreach($result as $k=>$v){
+              $result[$k] = $this->with_host?$this->baseUrl($v):str_replace('//','/','/'.$v);
+          }
+      }
+      return $result;
   }
   
 /**
  * 上传图片
- * @return false|上传后的地址
+ * @return 上传后的地址
  */
   public function upload($iptName='',$uploadDir='',$exType=[]){
-    empty($iptName) || $this->iptname = $iptName;
-    empty($uploadDir) || $this->upload_dir = $uploadDir;
-    empty($exType) || $this->ext_type = $exType;
-    
-    if( !empty($_FILES) && !empty($_FILES[$this->iptname]) && !$_FILES[$this->iptname]['error'] ){
-      $size = $_FILES[$this->iptname]['size'];
-      if($this->max_size > $size){
-        $tname = $_FILES[$this->iptname]["tmp_name"];
-        $fname = $_FILES[$this->iptname]["name"];
+    if( $this->isFile || $this->isFileReq($iptName) ){
+        empty($iptName) || $this->iptname = $iptName;
+        empty($uploadDir) || $this->upload_dir = $uploadDir;
+        empty($exType) || $this->ext_type = $exType;
         
-        $suffix = substr($fname, strrpos($fname, '.'));
-        $this->suffix = $suffix;
-        if( in_array(substr($suffix,1),$this->ext_type) ){
-          $pname = sha1(time().str_replace($suffix, '', $fname));
-          $this->pic_name = $pname;
-          $pname = $pname.$suffix;
+        $size = $_FILES[$this->iptname]['size'];
+        if($this->max_size > $size){
+          $tname = $_FILES[$this->iptname]["tmp_name"];
+          $fname = $_FILES[$this->iptname]["name"];
+        
+          $suffix = substr($fname, strrpos($fname, '.'));
+          $this->suffix = $suffix;
+          if( in_array(substr($suffix,1),$this->ext_type) ){
+            $pname = sha1(time().str_replace($suffix, '', $fname));
+            $this->pic_name = $pname;
+            $pname = $pname.$suffix;
           
-          $path = $this->mkdir( $this->upload_dir,1 ).$pname;
-          if(move_uploaded_file($tname,$path)){
-            return $path;
-          }
+            $path = FileStatic::mkdir( $this->upload_dir,1 ).$pname;
+            if( move_uploaded_file($tname,$path) ){
+              return $path;
+            }
         }
       }
     }
-    return FALSE;
+    return '';
   }
   
   private function thumb(){
@@ -193,7 +195,7 @@ class Upload{
     
     imagecopyresampled($_image,$image,0,0,0,0,$size[0],$size[1],$origin_inf[0],$origin_inf[1]);
     
-    $url = $this->mkdir($this->mkdir( $this->upload_dir,1 ).$suffix).$this->pic_name.$this->suffix;
+    $url = FileStatic::mkdir(FileStatic::mkdir( $this->upload_dir,1 ).$suffix).$this->pic_name.$this->suffix;
     $flag = false;
     switch ( $origin_inf['mime'] ){
       case 'image/jpeg':case 'image/jpg':case 'image/pjpeg':
@@ -208,4 +210,7 @@ class Upload{
     return $flag?$url:$flag;
   }
   
+  private function isFileReq($iptName){
+      return !empty($_FILES) && !empty($_FILES[$iptName]) && !$_FILES[$iptName]['error'];
+  }
 }
