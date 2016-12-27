@@ -1,0 +1,34 @@
+#panels{height:1000px;}
+#venue>.col{vertical-align:top;}
+#venue>.col:first-child{padding-right:20px;width:30%}
+#venue_tit{padding-bottom:20px;}
+#venue .tit{background-color:#e1f1f3;padding:10px;margin-bottom:10px;}
+#amount .tit{background-color:#ff7141;color:#fff;}
+.left li{padding-bottom:10px;}
+.left span{display:inline-block;width:76px;}
+#receiver textarea{width:190px;height:70px;}
+
+ul.form li{padding:5px 0;}
+ul.form li p{padding:5px 0;}
+ul.form span.btn{cursor:pointer;}
+
+#mode_prods .col{vertical-align:middle!important;}
+#mode_prods .col:first-child{padding-right:10px;text-align:right;width:120px;}
+#mode_prods .row:not(:last-child){border-bottom:1px dashed #ccc;padding-bottom:10px;margin-bottom:10px;}
+#mode_prods p{padding:5px 0;}
+#mode_prods p label{display:inline-block;width:280px;}
+#mode_prods input{width:40px}
+#mode_prods .bundle-amount{width:100px;font-size:20px;color:#ff7141;}
+
+#mall{margin-bottom:20px;}
+#venue select{height:38px;margin-bottom:10px;}
+.btn-green-outline.active{background-color:#1dad4c;color:#fff;}
+#mt_ids span{margin-bottom:5px;}
+#billlading_etc{width:560px;height:60px;}
+input[readonly]{color:#aaa;border:1px solid #ccc;}
+#mode_prods label{ font-size:14px;color:#467a97;}
+
+#amount strong{color:red;}
+#amount strong:before,#mode_prods .bundle-amount:before{content:"¥"}
+
+#search4lecturer_2{padding:1px 5px;width:220px;height:33px;border:none;border-bottom:1px dashed #aaa;}
