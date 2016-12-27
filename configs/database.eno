@@ -4,6 +4,7 @@
 #---------
 
 # /es/core/Database/DatabaseInterface的实现类名
+# Mysql|SQLite
 "driver":"SQLite",
 
 # 数据库地址
