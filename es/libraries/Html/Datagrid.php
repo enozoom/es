@@ -1,9 +1,9 @@
 <?php
 namespace es\libraries\Html;
-use es\core\Model\Model;
-use es\core\Toolkit\Config;
+use es\core\Model\ModelAbstract;
+use es\core\Toolkit\ConfigTrait;
 class Datagrid{
-  use Config;
+  use ConfigTrait;
   private $rows;
   private $model;             // 需要的model
   private $output;            // 最终输出
@@ -19,15 +19,23 @@ class Datagrid{
 * 
 * @return
 */  
-  public function init(&$rows,Model $model,$opr=TRUE){
+  public function init(&$rows,ModelAbstract $model,$opr=TRUE){
     $this->opr = $opr;
     $this->model = $model;
     $cls = $this->clsName($model,1);
     $this->rows =  is_array($rows)?$rows[$cls]:$rows->$cls;
-    $this->columns = array();
-    if( !empty($this->rows) ){
-
-      foreach($this->rows[0] as $k=>$v){
+    $this->columns = [];
+    
+    $row = null;
+    $flag = empty($this->rows);
+    if( $this->rows instanceof \Generator ){
+        $row = $this->rows->current();
+    }else{
+        $flag || $row = $this->rows[0];
+    }
+    
+    if( !empty($row) ){
+      foreach($row as $k=>$v){
         $this->columns[$k] = $this->model->_attributes($k);
       }      
     }  
@@ -114,7 +122,7 @@ class Datagrid{
    * @param \es\core\Model\Model $m
    * @return string
    */
-  public function clsName(\es\core\Model\Model $m)
+  public function clsName(ModelAbstract $m)
   {
       $cls = get_class($m);
       $cls = substr($cls, strrpos($cls, '\\')+1 );
