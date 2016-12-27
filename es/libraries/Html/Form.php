@@ -1,12 +1,12 @@
 <?php
 namespace es\libraries\Html;
 
-use es\core\Toolkit\Config;
+use es\core\Toolkit\ConfigTrait;
 
-use es\core\Toolkit\Time;
-use es\core\Http\Header;
+use es\core\Toolkit\TimeStatic;
+use es\core\Http\HeaderTrait;
 class Form{
-    use Config,Time,Header;
+    use ConfigTrait,HeaderTrait;
     private $form = '';
     private $model;
     private $instance;
@@ -19,7 +19,7 @@ class Form{
     * 
     * @return
     */
-    public function init(\es\core\Model\Model $model,\stdClass &$instance=null){
+    public function init(\es\core\Model\ModelAbstract $model,\stdClass &$instance=null){
         $this->model = $model;
         empty($instance) || $this->instance = &$instance;
         $this->cmdq = $this->getConfigs('cmdq');
@@ -88,7 +88,7 @@ class Form{
         $value = empty($this->instance)?(isset($attr['value'])?$attr['value']:''):$this->instance->$name;
         if( strpos($name,'time')!==FALSE ){
             empty($value) && $value = 0;
-            $value =  $this->formatTime($value);
+            $value =  TimeStatic::formatTime($value);
         }
         if(isset($attr['value'])) unset($attr['value']);
         empty($attr['type']) && $attr['type'] = 'text';
@@ -146,6 +146,7 @@ class Form{
           $select_with_label = '<label>%s</label><div class="select-js"><select data-name="%s" %s>%s</select></div>';
           $label = $this->model->_attributes($name);
           $value = empty($this->instance)?(empty($attr['value'])?'':$attr['value']):$this->instance->$name;
+          
           foreach($this->model->$method() as $k=>$v){
             $_option = '<option value="%s"%s>%s</option>';
             $_option = sprintf($_option, $k, $k==$value?' selected':'', $v);
