@@ -9,7 +9,7 @@ class User extends ModelAbstract
     {
         $attrs = [
                     'user_id'=>'#',
-                    'user_name'=>'用户名',
+                    'user_name'=>'用户',
                     'user_password'=>'密码',
                  ];
         return isset($attrs[$attr])?$attrs[$attr]:$attrs;
