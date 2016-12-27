@@ -42,20 +42,17 @@ class HtmlController extends ControllerAbstract
     $theme_path = $this->getConfig('theme_path');
     foreach(array('css','js') as $cj){
       $f = $cmdq['d'].'.'.$cmdq['c'].'.'.$cmdq['m'].'.'.$cj;
-      isset($data[$cj]) && $this->$cj .= ','.$data[$cj];
       if($cmdq['d']!=='esadmin')
-      {
-          file_exists("./theme/{$theme_path}/{$cj}/{$f}") && $this->$cj .= ','.$f;
-      }else{
-          file_exists(APPPATH."data/esadmin/{$cj}/{$f}") && $this->$cj .= ','.$f;
-      }
-      ($i = strpos($this->$cj,','))===0 && $this->$cj = substr($this->$cj,$i+1);
-      $this->$cj = str_replace('.'.$cj,'',$this->$cj);
+        isset($data[$cj]) && $this->$cj .= ','.$data[$cj];
+        file_exists("./theme/{$theme_path}/{$cj}/{$f}") && $this->$cj .= ','.$f;
+        ($i = strpos($this->$cj,','))===0 && $this->$cj = substr($this->$cj,$i+1);
+        $this->$cj = str_replace('.'.$cj,'',$this->$cj);
     }
     foreach( get_class_vars(__CLASS__) as $k =>$v ){
       (new \ReflectionClass(__CLASS__))->getProperty($k)->isPublic() && $data[$k] = $this->$k;
     }
-    $data['crumbs'] = $this->crumbs();
+    empty($data['crumbs']) && !empty( $this->crumbs() ) && $data['crumbs'] = $this->crumbs();
+    
   }
   
   
