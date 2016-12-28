@@ -55,4 +55,51 @@ class Category extends ModelAbstract
     {
         return $this->_get("category_pid = {$category_pid}",'category_id,category_title','category_sequence DESC');
     }
+    
+    /**
+     * 将idName()简化成一维数组
+     * @param number $category_pid
+     * @return [category_id:category_title,..]
+     */
+    public function simpleIdName($category_pid=0)
+    {
+        return $this->obj2kvArray($this->idName($category_pid), 'category_id', 'category_title');
+    }
+    
+    public function __category_pids($id=0,$pid=0)
+    {
+        return 
+        (empty($id)?$this->simpleIdName($pid):$this->_getByPKID($id,'category_id,category_title')->category_title);
+    }
+    /**
+     * 根据ID递归所有上级，并拼接返回
+     * @param number $category_id
+     * @param string $hasself     是否拼接自己
+     * @param string $recursion   是否递归
+     * @param string $glue        拼接字符串
+     */
+    public function _parentsIds($category_id=0,$hasself=TRUE,$recursion=TRUE,$glue='-'){
+        $cats = $this->_parentsIdsHelper($category_id,$recursion,$glue);
+        $cats = explode($glue, $cats);
+        empty($hasself) || array_unshift($cats,$category_id);
+        //array_pop($cats);// 最后一个为父级为0
+        $cats = array_reverse($cats);
+        return implode($glue, $cats);
+    }
+    /**
+     * _parents_ids()的辅助函数
+     * @param number $category_id
+     * @param string $hasself
+     * @param string $recursion
+     * @param string $glue
+     * @return string
+     */
+    private function _parentsIdsHelper($category_id=0,$recursion=TRUE,$glue='-'){
+        $cat = $this->_getByPKID($category_id,'category_pid,category_id');
+        $catid = $cat->category_pid;
+        if($recursion && !empty($catid)){
+            $catid .= $glue.$this->_parentsIdsHelper($catid,$recursion,$glue);
+        }
+        return $catid;
+    }
 }

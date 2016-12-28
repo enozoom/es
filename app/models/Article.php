@@ -26,4 +26,13 @@ class Article extends ModelAbstract
         empty($array['article_timestamp']) && $array['article_timestamp'] = time();
         return parent::_insert($array);
     }
+    
+    public function __status_ids($id=0,$pid=20)
+    {
+        return (new Category())->__category_pids($id,$pid);
+    }
+    public function __category_ids($id=0)
+    {
+        return $this->__status_ids($id,4);
+    }
 }
