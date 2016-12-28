@@ -1,4 +1,4 @@
-body{animation:clr 30s infinite;-webkit-animation:clr 30s infinite;font-family:"微软雅黑"}
+body{animation:clr 30s infinite;-webkit-animation:clr 30s infinite;font-family:"Microsoft YaHei"}
 @keyframes clr{0%,100%{background-color:#3498db; }13%,87%{ background-color:#9b59b6; }25%,75%{ background-color:#1abc9c；}50%{ background-color:#2ecc71}}
 @-webkit-keyframes clr{0%,100%{ background-color:#3498db; }13%,87%{ background-color:#9b59b6; }25%,75%{ background-color:#1abc9c；}50%{ background-color:#2ecc71}}
 .es4-form{width:400px;height:320px;border:1px solid #aaa;background-color:#fff;

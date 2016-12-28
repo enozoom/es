@@ -125,7 +125,6 @@
                return false;
            }else{
                var id = this.ids[i]; sid = (i+1<this.ids.length)?this.ids[i+1]:-1;
-               console.log( this.ids,id,sid );
                $.get('/esadmin/category/catsbypid/'+id,function(r){
                     if(!Number(r.err) && r.msg.toString().length){
                         var $sel = Form.Select._sel();

@@ -56,6 +56,25 @@
             this.Body._init();
             this.A._init();
         },
+        Btn:{
+            _add:function(url,q){// 为当前页面增加一个添加按钮
+                var $tp = EsAdmin.Dom.Body._tabPanel();
+                if(q){
+                    var i = $tp[0].data('fromid'),tabs =EsAdmin.Dom.History.tab[i],
+                    _url = tabs[tabs.length-1],pid = _url.substring(_url.lastIndexOf('/')+1),
+                    _q = /^\d+$/.test(pid)?(q+pid):'';
+                    url += _q;
+                }
+                var $btn = $('<a data-href="'+url+'" class="btn btn-smallx2 btn-blue">添加</a>'),
+                    $refresh = $tp[1].find('.refresh');
+
+                if($refresh.length){
+                    $refresh.after($btn);
+                }else{
+                    $btn.appendTo('<p></p>').prependTo($tp[1]);
+                }
+            }
+        },
         A:{
             _init:function(){
                 $('#panels').on('click','a:not(.no-bind-a)',EsAdmin.Dom.A._click);
@@ -89,6 +108,7 @@
                 $('body').removeClass('active');
                 $('#loadding').addClass('active');
             },
+            // 当前处于活动状态的tab和其对应的模板
             _tabPanel:function(){
                 return [$('#tabs .tab.active'),EsAdmin.Dom.Panel._active()];
             },
@@ -158,7 +178,7 @@
             _hook:function(){
                 if( EsAdmin.Dom.Panel._find('.es4-form').length ){
                     if(typeof(Form)==="undefined"){
-                        $.getScript('/min/esadmin-esadmin.form.min.js',function(){
+                        $.getScript('/min/esadmin.form.js',function(){
                             Form._init();
                         });
                     }else{
@@ -167,7 +187,7 @@
                 }
                 if( EsAdmin.Dom.Panel._find('.eno-datagrid').length ){
                     if(typeof(Grid)==="undefined"){
-                        $.getScript('/min/esadmin-esadmin.grid.min.js',function(){
+                        $.getScript('/min/esadmin.grid.js',function(){
                             Grid._init();
                         });
                     }else{
@@ -215,10 +235,10 @@
                         $('#tabs .tab:not(.active)').eq(1).find('i').trigger('click');
                     }
                     
-                    var $_t = $t.clone();
-                    $_t.find('i,sup').remove();
+                    var $_t = $t.clone(),$_span = $t.parents('div').siblings('span').clone();
+                    $_t.find('i,sup').remove(),$_span.find('i,em').remove(),shtml=$_span.html();
                     
-                    var tab_txt = $_t.html(),
+                    var tab_txt = (shtml.length>0?shtml+'-':'')+$_t.html(),
                         href = $t.data('href'),
                         $tab = $('<div class="tab" data-fromid="'+id+'">'+tab_txt+'</div>'),
                         $panel = $('<div class="panel"></div>');
@@ -257,7 +277,8 @@
                 EsAdmin.Tool._addCls( EsAdmin.Dom.Panel._list().eq(i) );
                 
                 EsAdmin.Dom.Nav._a_active($nav);
-            }
+            },
+            
         },
         Panel:{
             _active:function(selector){

@@ -34,23 +34,26 @@ body.active #top-container {
     width:180px;
     height:100%
 }
-#logo,#tabs {
-    height:40px
-}
+
 #logo {
-    font-size:28px;
+    font-size:20px;
     font-weight:100;
     padding-left:10px;
     color:#fff;
-    margin-bottom:20px;
-    overflow:hidden;
+    width:180px;
+    padding:10px;
+    box-sizing:border-box;
+    margin-top:20px;
 }
-#logo img {
-    width:80%;
-    padding-top:10%
+#logo img{
+    max-width:100%;
+    display:block;
+}
+#logo small{
+    font-weight:100;
 }
 #es-search {
-    margin:30px 5px 10px;
+    margin:10px 5px;
     padding:5px 5px 8px;
     border-radius:4px;
     height:30px;
@@ -116,7 +119,8 @@ body.active #top-container {
     background-color:#fff
 }
 #tabs {
-    background:url(/uploads/a/bg.png) rgba(52,73,94,.8)
+    background:url(/uploads/a/bg.png) rgba(52,73,94,.8);
+    height:40px
 }
 #tabs .tab{
     float:left;
