@@ -275,7 +275,10 @@
                    $nav = $('#'+$j.data('fromid'));
                 EsAdmin.Tool._addCls( $j );
                 EsAdmin.Tool._addCls( EsAdmin.Dom.Panel._list().eq(i) );
-                
+                // 更改title标题
+                var $tit = $j.clone();
+                $tit.find('i').remove();
+                $('title').html( $tit.html() );
                 EsAdmin.Dom.Nav._a_active($nav);
             },
             
