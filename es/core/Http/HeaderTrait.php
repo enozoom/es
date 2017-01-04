@@ -35,7 +35,7 @@ trait HeaderTrait{
         $m = 'text/javascript';
       break;
       case 'json':
-        $m = 'application/json';
+        $m = 'application/json; charset=utf-8';
       break;
       case 'pdf':
         $m = 'application/pdf';
