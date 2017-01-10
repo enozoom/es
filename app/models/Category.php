@@ -102,4 +102,11 @@ class Category extends ModelAbstract
         }
         return $catid;
     }
+    
+    public function _update($pkid,Array $array){
+        if(isset($array['category_pid']) && $pkid == $array['category_pid']){
+            unset($array['category_pid']);
+        }
+        return parent::_update($pkid, $array);
+    }
 }
