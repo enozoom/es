@@ -16,4 +16,21 @@ class DataController extends ControllerAbstract{
     $this->closeDB();
     exit();
   }
+  
+  /**
+   * 获取POST提交数据且必须包含$requires中存在的数据
+   * @param array $requires
+   * @return bool
+   */
+  protected function __postRequires($requires=[]){
+      return $this->reqestMethod('post') && $this->isRequired($requires,$_POST);
+  }
+  
+  /**
+   * logger->debug的别名
+   * @param string $msg
+   */
+  protected function __log($msg){
+      $this->getConfigs('logger')->debug($msg);
+  }
 }
