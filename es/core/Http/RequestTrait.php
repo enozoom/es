@@ -9,10 +9,12 @@ trait RequestTrait{
    * @return string
    */
   protected function baseUrl($url=''){
+      $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||
+      (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';
+      
       return 
       ( strpos($url, 'http://') === FALSE && strpos($url, 'https://') === FALSE )?
-      ( 'http://'.str_replace('//','/',$_SERVER['HTTP_HOST'].'/'.$url) ):
-      $url;
+      ( $http_type.str_replace('//','/',$_SERVER['HTTP_HOST'].'/'.$url) ):$url;
   }
   /**
    * 请求的方法
