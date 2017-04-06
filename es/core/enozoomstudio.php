@@ -21,6 +21,10 @@ spl_autoload_register(function($classname){
     }
   }
 });
+// 加载第三方库
+if( file_exists($vendor = './vendor/autoload.php') ){
+    require $vendor;
+}
 
 // 配置文件
 $CONFIGS = ConfigStatic::init();
