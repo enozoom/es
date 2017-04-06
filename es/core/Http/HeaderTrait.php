@@ -52,6 +52,15 @@ trait HeaderTrait{
       case 'zip':
         $m = 'application/zip';
       break;
+      case 'gif':
+        $m = 'image/gif';
+      break;
+      case 'jpe':case 'jpeg':case 'jpg':
+          $m = 'image/jpeg';
+      break;
+      case 'png':
+          $m = 'image/png';
+      break;
     }
     headers_sent() || header('Content-type: '.$m.(empty($utf8)?'':'; charset=utf-8') );
   }
