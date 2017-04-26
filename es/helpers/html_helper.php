@@ -39,7 +39,7 @@ if(!function_exists('generate_html5_head')){
 */
   function generate_html5_head($title,$css=FALSE,$description=FALSE,$keywords=FALSE,$viewport=FALSE,$noindex=FALSE){
     
-    $html5 = '<!DOCTYPE html><html lang="zh-cmn-Hans"><head><meta charset="utf-8" />';  
+    $html5 = '<!DOCTYPE html><html lang="cmn-hans"><head><meta charset="utf-8" />';  
     $html5 .= "<title>$title</title>";
     $html5 .= '<meta name="renderer" content="webkit"> ';
     $html5 .= '<meta name="author" content="'.ES_AUTHOR.'" />';
