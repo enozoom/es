@@ -34,7 +34,13 @@ abstract class ModelAbstract{
   
   public function __get($var)
   {
-    return $this->$var;
+    switch($var){
+        case 'tableName':
+            return $this->db->tablename( $this->$var );
+        break;default:
+            return $this->$var;
+    }
+    return null;
   }
   
 /**
@@ -162,7 +168,6 @@ abstract class ModelAbstract{
     }
     return $data;
   }
-  
   
 /**
  * 表字段及对应的字段描述
