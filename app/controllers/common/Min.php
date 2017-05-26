@@ -20,6 +20,13 @@ final class min extends DataController{
  
     public function index($files='')
     {
+        // 切换日期文件夹
+        if(preg_match('/(\d{4})\/([^\/]*)/', $files,$matchs)){
+            $files = $matchs[2];
+            $this->def_dir = preg_replace('/(\d+)/', $matchs[1], $this->def_dir);
+        }
+        
+        
         $output = $this->cache($files);
         $suffix = substr($files,strrpos($files,'.')+1);// 获取后缀
         empty($output) || $this->compress($output,$suffix);

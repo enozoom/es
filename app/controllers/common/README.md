@@ -9,3 +9,6 @@
 * **前台** 使用css,js时，路径受`configs/config.eno`中的`theme_path`影响，如前台的某页面为`esweb/home/index`,则其对应的css为`theme/"theme_path"/css/esweb.home.index.css`
 * **后台** 使用css,js时，需要加前缀_"esadmin."_,如后台的某页面为`esadmin/home/index`,则其对应的css为`app/data/esadmin/css/esadmin.home.index.css`。
 
+新增：  
+
+支持`public $css = '/min/2017/public.base.min';`，以`min/4位年份/*.(cs|j)s`时，会忽视`configs/config.eno`中的`theme_path`中的年份设置，其实际css路径为`theme/esweb/2017/css/public.base.min.css`  
