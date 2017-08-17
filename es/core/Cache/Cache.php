@@ -8,6 +8,7 @@ namespace es\core\Cache;
 
 use es\core\Toolkit\ConfigTrait;
 use es\core\Toolkit\FileStatic;
+use es\core\Toolkit\StrStatic;
 use es\core\Toolkit\TimeStatic;
 use es\core\Http\HeaderTrait;
 
@@ -87,7 +88,7 @@ class Cache{
   public function save($html,$len=1024){
     if($this->is_allow_cache() && mb_strlen($html,'UTF-8')>$len){
       $file = $this->cache_file_path();
-      $html = FileStatic::cleanHtmlblank($html);
+      $html = StrStatic::cleanHtmlblank($html);
       $es = PHP_EOL."<!--[[".ES_POWER.' '.ES_AUTHOR.' '.
                    TimeStatic::formatTime().' '.
                    $this->cache_file_rule().
