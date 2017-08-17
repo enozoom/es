@@ -2,7 +2,24 @@
 
 namespace es\core\Cache;
 /*
- * 用于查询缓存
+用于存储查询缓存，如:
+<?php
+namespace app\libraries\api;
+class Cache{
+  private $QCache;
+  
+  public function __construct($cmdq){
+      $this->QCache = new \es\core\Cache\Querycache((object)$cmdq);
+  }
+  
+  public function save($data){
+    $this->QCache->save($data);
+  }
+  
+  public function read(){
+    return $this->QCache->read();
+  }
+}
  */
 
 class Querycache extends Cache
