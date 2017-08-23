@@ -23,7 +23,7 @@ class DataController extends ControllerAbstract{
    * @return bool
    */
   protected function __postRequires($requires=[]){
-      return $this->reqestMethod('post') && $this->isRequired($requires,$_POST);
+      return strtolower($_SERVER['REQUEST_METHOD'])=='post' && $this->isRequired($requires,$_POST);
   }
   
   /**
