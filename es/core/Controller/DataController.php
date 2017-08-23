@@ -8,8 +8,9 @@
 namespace es\core\Controller;
 
 use es\core\Http\ResponseTrait;
+use es\core\Toolkit\AryTrait;
 class DataController extends ControllerAbstract{
-  use ResponseTrait{ render as private oRender; }
+  use AryTrait,ResponseTrait{ render as private oRender; }
   
   protected function render($str='',$type='html',$httpCache=24){
     $this->oRender($str,$type,$httpCache);
