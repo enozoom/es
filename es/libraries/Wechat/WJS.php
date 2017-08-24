@@ -22,9 +22,9 @@ class WJS{
   * @param string $access_token 
   * @return string
   */
-  public function jsapi_ticket($access_token){
+  public static function jsapi_ticket($access_token){
     // 从没有获取过access_token或者已经过期
-    $path = FileStatic::cache_file();
+    $path = self::cache_file();
    
     if(file_exists($path)){
       $ticket = json_decode( file_get_contents($path) );
@@ -34,7 +34,7 @@ class WJS{
     }
    
     $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi';
-    $json = json_decode($this->curlGet(sprintf($url,$access_token)));
+    $json = json_decode(file_get_contents(sprintf($url,$access_token)));
     if( $json->errcode ){
       die( 'get jsapi_ticket fail!' );
     }else{
