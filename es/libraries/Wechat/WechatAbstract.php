@@ -83,7 +83,8 @@ abstract class WechatAbstract
             $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s';
             $json = json_decode($this->curlGet(sprintf($url,$this->appid,$this->appSecret)));
             if(!empty($json->errcode)){ // 获取失败直接停止
-                die('get access_token fail!' );
+                $this->log($json);
+                //die('get access_token fail!' );
             }
             $data = array('expires'=>time()+$json->expires_in,
                           'access_token'=>$json->access_token);
@@ -114,7 +115,7 @@ abstract class WechatAbstract
      *
      * @return
      */
-    protected function jsapi_sign($noncestr,$timestamp,$url=''){
+    public function jsapi_sign($noncestr,$timestamp,$url=''){
         return $this->WJS->jsapi_sign($this->access_token, $noncestr, $timestamp, $url);
     }
     
@@ -195,7 +196,7 @@ abstract class WechatAbstract
     /**
      * 微信分享时的必要数据
      */
-    protected function share_data(){
+    public function share_data(){
         $t = time();
         $s = StrStatic::randomString('alnum',16);
         return [
