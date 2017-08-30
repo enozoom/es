@@ -30,7 +30,7 @@
         return this;
     },
     _textarea:function(){// 一个表单只能存在textarea
-        $textarea = $('#panels .panel.active textarea')
+        $textarea = $('#panels .panel.active textarea:not(.normal)')
         if($textarea.length){
             $textarea.each(function(i){
                 var id = $(this).attr('id');
@@ -100,7 +100,7 @@
         },
         _change:function( $sel ){
             var sname = $sel.attr('name').replace('[]','');
-            if( $.inArray(sname,['category_id','area_ids','category_pid','goods_category_id'])<0 ){
+            if( typeof($sel.attr('data-pids'))=='undefined' ){
                 return false;
             }
             
