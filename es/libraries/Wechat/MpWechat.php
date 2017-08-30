@@ -54,5 +54,4 @@ class MpWechat extends WechatAbstract
         //$this->log($openid);
         return $openid;
     }
-    
 }
