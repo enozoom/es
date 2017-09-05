@@ -87,7 +87,7 @@
                     Form.Select._new(0,$container);
 
                 }else{
-
+                    $(this).attr('name',name+'[]').prepend('<option value="0" selected>请选择</option>');
                 }
             })
         	
