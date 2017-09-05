@@ -53,14 +53,9 @@
         $('.select-js').on('change','select',function(){
             Form.Select._change( $(this) );
         });
-        var $cats = $('#panels .panel.active select[data-pids]');
-        if($cats.length){
-            $cats.each(function(){
-                var pids = $(this).data('pids').toString(),
-                    $div = $(this).parent('.select-js'),
-                    name = $(this).data('name');
-                Form.Select._init($div,pids,name);
-            })
+        var $selects = $('#panels .panel.active select[data-pids]');
+        if($selects.length){
+            Form.Select._init($selects);
         }
         return this;
     },
@@ -80,71 +75,72 @@
         }
     },
     Select:{// 级联用的select,仅限级联
-        container:'',// 放置selects的容器，必须赋值
-        name:'',// 所有select的name属性
-        ids:[],// 需要变成select的id,由id及其同辈组成option
-        _init:function($container,ids,name){
-            this.container = $container;
-            this.name = name;
-            var $sel = $container.find('select');
-            if(ids.length>0 && (this.ids=ids.split('-')).length>=1){
-                $sel.remove();
-                this._new(0);
-            }else{
-                if( !$sel.find('option[value="0"]').length ){
-                    $sel.prepend('<option value="0" selected>请选择</option>');
+        _init:function($selects){
+            $selects.each(function(){
+                var $container = $(this).parent('.select-js'),
+                    name = $(this).data('name'),
+                    pids = $(this).data('pids').toString().split('-');
+                
+                if( pids.length>1){
+                    $container.data('name',name).data('ids',pids);
+                    $(this).remove();
+                    Form.Select._new(0,$container);
+
+                }else{
+
                 }
-                $sel.attr('name',name+'[]');
-                Form.Select._auto($sel);
-            }
+            })
+        	
         },
         _change:function( $sel ){
-            var sname = $sel.attr('name').replace('[]','');
-            if( typeof($sel.attr('data-pids'))=='undefined' ){
+            var name = $sel.data('name'),flag = name && name.indexOf('[]')==-1;
+            if( flag && typeof($sel.attr('data-pids'))=='undefined' ){
                 return false;
             }
             
-            Form.Select.container = Form.Select.container || $sel.parent('.select-js');
-            Form.Select.name = Form.Select.name || $sel.data('name');
+            var $container = $sel.parent('.select-js');
+            name = $sel.data('name');
             $sel.nextAll('select').remove();
             var id = $sel.val();
             if(id>0){
                 $.get('/esadmin/category/catsbypid/'+$sel.val(),function(r){
                     if(!Number(r.err) && r.msg.toString().length){
-                        var $sel = Form.Select._sel();
+                        var $sel = Form.Select._sel(name);
                         $.each(r.msg,function(ii,v){
                             $sel.append('<option value="'+ii+'"'+(ii==id?' selected':'')+'>'+v+'</option>');
                         });
-                        Form.Select.container.append($sel);
+                        $container.append($sel);
                     }
                 },'json');
             }
         },
-        _new:function(i){// 新增一个select;使用递归避免显示顺序错误
-           if(i >= this.ids.length){
+        /**
+         * @param int i
+         * @param JQuery $container
+         * @param array ids
+         * @param string name
+         */
+        _new:function(i,$container){// 新增一个select;使用递归避免显示顺序错误
+           var ids = $container.data('ids');
+           
+           if(i >= ids.length){
                return false;
            }else{
-               var id = this.ids[i]; sid = (i+1<this.ids.length)?this.ids[i+1]:-1;
-               $.get('/esadmin/category/catsbypid/'+id,function(r){
+               $.get('/esadmin/category/catsbypid/'+ids[i],function(r){
+                    var sid = (i+1<ids.length)?ids[i+1]:-1;
                     if(!Number(r.err) && r.msg.toString().length){
-                        var $sel = Form.Select._sel();
+                        var $sel = Form.Select._sel($container.data('name'));
                         $.each(r.msg,function(ii,v){
                             $sel.append('<option value="'+ii+'"'+(ii==sid?' selected':'')+'>'+v+'</option>');
                         });
-                        Form.Select.container.append($sel);
+                        $container.append($sel);
                     }
-                    Form.Select._new(++i)
+                    Form.Select._new(++i,$container)
                },'json');
            }
         },
-        _sel:function(){
-            return $('<select name="'+Form.Select.name+'[]"><option value="0">请选择</option></select>');
-        },
-        _auto:function($sel){// 自动触发第一个菜单项,避免分类的自动死循环
-            var isAuto = $sel.parents('form').data('selectauto');
-            if( isAuto === undefined || isAuto === 1 ){
-                $sel.trigger('change');
-            }
+        _sel:function(name){
+            return $('<select name="'+name+'[]"><option value="0">请选择</option></select>');
         }
     },
     Upload:{
