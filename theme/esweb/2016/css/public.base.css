@@ -42,5 +42,16 @@ button i,.btn i{margin-right:3px;}
 .btn-red-outline.btn-smallx2,
 .btn-orange-outline.btn-smallx2{line-height:20px;}
 
+
+.color.red{color:#c62828;}
+.color.green{color:#4caf50;}
+.color.blue{color:#2196f3;}
+.color.cyan{color:#00bcd4;}
+.color.teal{color:#009688;}
+.color.orange{color:#ff9800;}
+.color.amber{color:#ffc107;}
+.color.yellow{color:#ffeb3b;}
+.color.grey{color:#9e9e9e;}
+
 .es-row{display:table;width:100%;}
 .es-col{display:table-cell;vertical-align:middle;}
