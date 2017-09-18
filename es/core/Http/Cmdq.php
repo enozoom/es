@@ -25,7 +25,7 @@ class Cmdq{
       $q ='';
       isset($_SERVER['QUERY_STRING']) && $q = $_SERVER['QUERY_STRING'];
       isset($_SERVER['SCRIPT_URL']) && $q = $_SERVER['SCRIPT_URL'];//SAE
-      empty($query) && $q = $_SERVER['REQUEST_URI'];
+      empty($q) && $q = $_SERVER['REQUEST_URI'];
       return $q;
     };
     $query = $query();
