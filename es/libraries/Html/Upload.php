@@ -52,6 +52,10 @@ class Upload{
       
       if( !empty($this->pic_url = $this->upload()) ){
           $result['url'] = $this->pic_url;
+          
+//           global $CONFIGS;
+//           $CONFIGS->logger->debug($result);
+          
           if( !empty($this->thumb) ){
               $this->thumb();
               $result = ['thumb'=>$this->thumb_url,'cut'=>$this->cut_url]+$result;
@@ -75,19 +79,25 @@ class Upload{
         empty($exType) || $this->ext_type = $exType;
         
         $size = $_FILES[$this->iptname]['size'];
+        
         if($this->max_size > $size){
           $tname = $_FILES[$this->iptname]["tmp_name"];
           $fname = $_FILES[$this->iptname]["name"];
         
           $suffix = substr($fname, strrpos($fname, '.'));
           $this->suffix = $suffix;
-          if( in_array(substr($suffix,1),$this->ext_type) ){
+
+          
+          if( in_array( strtolower( substr($suffix,1) ) ,$this->ext_type) ){
             $pname = sha1(time().str_replace($suffix, '', $fname));
             $this->pic_name = $pname;
             $pname = $pname.$suffix;
           
             $path = FileStatic::mkdir( $this->upload_dir,1 ).$pname;
+            
             if( move_uploaded_file($tname,$path) ){
+//                 global $CONFIGS;
+//                 $CONFIGS->logger->debug(1234);
               return $path;
             }
         }
